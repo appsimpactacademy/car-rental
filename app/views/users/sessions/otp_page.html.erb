@@ -1,0 +1,19 @@
+<!-- app/views/sessions/otp_page.html.erb -->
+
+<div class="col-lg-6 mx-auto mt-5">
+  <div class="card shadow">
+    <h2 class="card-header text-cwn">Enter OTP</h2>
+    <div class="card-body">
+      <%= form_tag(verify_otp_path, method: :post) do %>
+        <div class="form-group">
+          <%= label_tag :otp, "OTP" %><br />
+          <%= text_field_tag :otp, nil, class: "form-control" %>
+        </div>
+        <div class="mt-2">
+          <%= submit_tag "Verify OTP", class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+	

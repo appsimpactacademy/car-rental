@@ -1,0 +1,2 @@
+module Users::OtpHelper
+end
