@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root "home#index"
+  root "vehicles#index"
   devise_for :users, controllers: {
     sessions: 'users/sessions',
     registrations: 'users/registrations',
@@ -11,4 +11,5 @@ Rails.application.routes.draw do
     get '/otp_page', to: 'users/sessions#otp_page', as: :otp_page
     post '/verify_otp', to: 'users/sessions#verify_otp', as: :verify_otp
   end
+  resources :vehicles
 end

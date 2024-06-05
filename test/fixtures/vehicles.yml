@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  registration_number: MyString
+  owner: one
+  vehicle_type: one
+  base_price: 9.99
+  price_per_km: 9.99
+  name: MyString
+  fule_type: MyString
+
+two:
+  registration_number: MyString
+  owner: two
+  vehicle_type: two
+  base_price: 9.99
+  price_per_km: 9.99
+  name: MyString
+  fule_type: MyString

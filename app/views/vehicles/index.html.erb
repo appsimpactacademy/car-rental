@@ -1,0 +1,43 @@
+<%= render 'shared/search_bar' %>
+
+<h1 class="fw-bold mt-2 mb-3">Explore All Vehicles</h1>
+
+<div class="row">
+  <% @vehicles.each do |vehicle| %>
+    <div class="col-md-4 mb-4">
+      <%= link_to vehicle_path(vehicle), data: {turbolinks: true} do %>
+        <div class="card shadow" style="height: 490px;">
+          <% if vehicle.vehicle_images.attached? %>
+            <%= image_tag url_for(vehicle.vehicle_images.last), class: "card-img-top", size: "350x300" %>
+            <% else %>
+              <%= image_tag url_for("https://themesflat.co/html/motorxhtml/assets/images/gallary/thum2.jpg"), class: "card-img-top", size: "350x300"  %>
+            <% end %>
+          <div class="card-body">
+            <h5 class="card-title"><%= link_to vehicle.name, vehicle_path(vehicle), class: "text-decoration-none text-dark" %></h5>
+            <div class="row">
+              <div class="col-lg-4">
+                <p class="card-text"><i class="bi bi-fuel-pump fs-3"></i> <br> <%= vehicle.fule_type %></p>
+              </div>
+              <div class="col-lg-4">
+                <p class="card-text"><i class="bi bi-speedometer2 fs-3"></i> <br> <%= vehicle.price_per_km %></p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-lg-6">
+                <p class="card-text fw-bold"> $ <%= vehicle.base_price %></p>
+              </div>
+              <div class="col-lg-6 fw-bold">
+                <%= link_to vehicle_path(vehicle), class: "text-decoration-none text-danger" do %>
+                  View Details <i class="bi bi-arrow-up-right"></i>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+
