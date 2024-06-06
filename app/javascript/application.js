@@ -2,3 +2,5 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 import * as bootstrap from "bootstrap"
+import * as coreui from 'coreui'
+import * as CoreUIIcons from 'coreui-icons'

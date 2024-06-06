@@ -3,7 +3,7 @@ class VehiclesController < ApplicationController
 	before_action :set_vehicle, only: [:show, :edit, :update, :destroy]
 
 	def index
-		@vehicles = Vehicle.all.includes(:owner, :vehicle_type).order(created_at: :desc)
+		@vehicles = Vehicle.all.includes(:owner, :vehicle_type, vehicle_images_attachments: :blob).order(created_at: :desc)
 	end
 
 	def new

@@ -25,5 +25,9 @@ class User < ApplicationRecord
     return false if otp.blank? || otp_sent_at.blank?
     return false if otp_sent_at < 10.minutes.ago # OTP expires after 10 minutes
     otp == submitted_otp
-  end                             
+  end
+
+  def is_admin?
+    role == 'admin'
+  end                        
 end
