@@ -9,9 +9,9 @@ class User < ApplicationRecord
             :username, 
              presence: true
   validates :phone_number, presence: true, 
-                             uniqueness: true, 
-                             length: { minimum: 10, maximum: 10 }, 
-                             numericality: { only_integer: true }
+                           uniqueness: true, 
+                           length: { minimum: 10, maximum: 10 }, 
+                           numericality: { only_integer: true }
 
 
   def generate_otp

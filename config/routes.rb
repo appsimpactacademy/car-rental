@@ -12,4 +12,11 @@ Rails.application.routes.draw do
     post '/verify_otp', to: 'users/sessions#verify_otp', as: :verify_otp
   end
   resources :vehicles
+
+  namespace :admin do
+    resources :owners
+    resources :vehicles
+    resources :vehicle_types
+  end
+
 end

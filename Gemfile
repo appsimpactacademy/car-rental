@@ -76,3 +76,4 @@ gem 'plivo'
 gem 'dotenv-rails', groups: [:development, :test]
 
 gem "importmap-rails", "~> 2.0"
+gem 'cancancan'
