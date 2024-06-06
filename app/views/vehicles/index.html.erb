@@ -5,7 +5,7 @@
 <div class="row">
   <% @vehicles.each do |vehicle| %>
     <div class="col-md-4 mb-4">
-      <%= link_to vehicle_path(vehicle), data: {turbolinks: true} do %>
+      <%= link_to vehicle_path(vehicle) do %>
         <div class="card shadow" style="height: 490px;">
           <% if vehicle.vehicle_images.attached? %>
             <%= image_tag url_for(vehicle.vehicle_images.last), class: "card-img-top", size: "350x300" %>
