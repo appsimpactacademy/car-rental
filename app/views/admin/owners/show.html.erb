@@ -1,0 +1,15 @@
+<h1>Owner Details</h1>
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title"><%= @owner.name %></h5>
+    <p class="card-text"><strong>Email:</strong> <%= @owner.email %></p>
+    <p class="card-text"><strong>Contact Number:</strong> <%= @owner.contact_number %></p>
+    <p class="card-text"><strong>City:</strong> <%= @owner.city %></p>
+    <p class="card-text"><strong>State:</strong> <%= @owner.state %></p>
+    <p class="card-text"><strong>Country:</strong> <%= @owner.country %></p>
+    <%= link_to 'Edit', edit_admin_owner_path(@owner), class: 'btn btn-primary' %>
+    <%= link_to 'Back', admin_owners_path, class: 'btn btn-secondary' %>
+    <%= link_to 'Delete', admin_owner_path(@owner), data: { turbo_method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+  </div>
+</div>

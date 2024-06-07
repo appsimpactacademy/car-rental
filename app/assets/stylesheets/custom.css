@@ -4,3 +4,7 @@
 	height: 300px; /* Adjust the height as per your requirement */
 	object-fit: cover; /* This property ensures that the entire image is visible within the defined dimensions */
 }
+.vehicle-gallery-images {
+	height: 230px;
+	object-fit: cover;
+}

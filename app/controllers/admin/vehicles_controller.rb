@@ -1,6 +1,4 @@
-class Admin::VehiclesController < ApplicationController
-	before_action :authenticate_user!
-	load_and_authorize_resource
+class Admin::VehiclesController < AdminController
 	before_action :set_vehicle, only: [:show, :edit, :update, :destroy]
 
 	def index
@@ -20,7 +18,7 @@ class Admin::VehiclesController < ApplicationController
       end
     end
 		if @vehicle.save
-			redirect_to @vehicle, notice: "Vehicle was successfully created."
+			redirect_to admin_vehicles_path, notice: "Vehicle was successfully created."
 		else
 			render :new, status: :unprocessable_entity
 		end
@@ -33,13 +31,13 @@ class Admin::VehiclesController < ApplicationController
 	end
 
 	def update
-		if @vehicle.vehicle_images.present? && params[:vehicle][:vehicle_images].present?
+		if @vehicle.vehicle_images.present? && params[:vehicle][:vehicle_images].present? ||  params[:vehicle][:vehicle_images].present?
 			params[:vehicle][:vehicle_images].each do |image|
         @vehicle.vehicle_images.attach(image)
       end
 		end
 		if @vehicle.update(vehicle_params)
-			redirect_to @vehicle, notice: "Vehicle was successfully updated."
+			redirect_to admin_vehicles_path, notice: "Vehicle was successfully updated."
 		else
 			render :edit, status: :unprocessable_entity			
 		end
@@ -47,7 +45,7 @@ class Admin::VehiclesController < ApplicationController
 
 	def destroy
 		@vehicle.destroy
-		redirect_to vehicles_path, notice: "Vehicle was successfully destroyed."
+		redirect_to admin_vehicles_path, notice: "Vehicle was successfully destroyed."
 	end
 
 	private

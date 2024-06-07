@@ -14,9 +14,13 @@
   	  <%= render 'shared/admin/sidebar' %>
   	  <div class="wrapper d-flex flex-column min-vh-100">
         <%= render 'shared/admin/header' %>
-        <%#= yield %>
+        <div class="body flex-grow-1 px-3">
+          <div class="container-lg">
+            <%= flash_messages %>
+            <%= yield %>
+          </div>  
+        </div>
         <%= render 'shared/admin/footer' %>
       </div>
-      <%#= yield %>
   </body>
 </html>

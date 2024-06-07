@@ -12,30 +12,13 @@
       <%= image_tag @vehicle.cover_image, class:'cover-img w-100 rounded-2' %>
     </div>
   <% end %>
-  <div id="vehicleCarousel" class="carousel slide mt-5 mb-5" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      <% @vehicle.vehicle_images.each_slice(4).with_index do |images, index| %>
-        <div class="carousel-item <%= 'active' if index.zero? %>">
-          <div class="row gallery">
-            <% images.each do |image| %>
-              <div class="col">
-                <%= link_to image_tag(image, class: "d-block rounded-2 w-100 vehicle-gallery-images"), image, data: { lightbox: "vehicle-gallery" } %>
-              </div>
-            <% end %>
-          </div>
-        </div>
-      <% end %>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#vehicleCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#vehicleCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
-  </div>
-
+  <div class="row mt-4">        
+    <% @vehicle.vehicle_images.each do |image| %>
+      <div class="col-3 mt-3">
+        <%= image_tag image, class: "d-block rounded-2 w-100 vehicle-gallery-images" %>
+      </div>
+    <% end %>
+  </div>  
   <div class="row">
     <div class="col-lg-9">
       <% if @vehicle.description.present? %>
@@ -60,13 +43,10 @@
         <p class="px-3"><i class="bi bi-telephone fs-3 me-2"></i> <%= @vehicle.owner.try(:contact_number) %></p>
       </div>
     </div>
+    <div class="links">
+      <%= link_to 'Edit', edit_admin_vehicle_path(@vehicle), class: 'btn btn-primary' %>
+      <%= link_to 'Back', admin_vehicles_path, class: 'btn btn-secondary' %>
+      <%= link_to 'Delete', admin_vehicle_path(@vehicle), data: { turbo_method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+    </div>
   </div>
-<script>
-$(document).ready(function() {
-    const lightbox = GLightbox({
-        selector: '.gallery a',
-        touchNavigation: true,
-        loop: true
-    });
-});
-</script>
+</div>
