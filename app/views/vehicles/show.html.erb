@@ -1,4 +1,4 @@
-<div class="col-lg-12 mx-auto mb-5">
+<div class="col-lg-12 mx-auto mb-5" data-controller="glightbox">
   <div class="row">
     <div class="col-lg-6">
       <h1><%= @vehicle.name %></h1>
@@ -61,12 +61,4 @@
       </div>
     </div>
   </div>
-<script>
-  $(document).ready(function() {
-    const lightbox = GLightbox({
-      selector: '.gallery a',
-      touchNavigation: true,
-      loop: true
-    });
-  });
-</script>
+</div>
