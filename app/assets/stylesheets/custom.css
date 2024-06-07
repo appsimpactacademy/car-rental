@@ -8,3 +8,10 @@
 	height: 230px;
 	object-fit: cover;
 }
+.flash-message {
+  transition: opacity 0.5s ease-out;
+}
+
+.flash-message.fade-out {
+  opacity: 0;
+}
