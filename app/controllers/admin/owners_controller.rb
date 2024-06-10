@@ -44,6 +44,6 @@ class Admin::OwnersController < AdminController
 	end
 
 	def owner_params
-		params.require(:owner).permit(:name, :email, :contact_number, :city, :state, :country)
+		params.require(:owner).permit(:name, :email, :contact_number, :city, :state, :country, :profile_image)
 	end
 end

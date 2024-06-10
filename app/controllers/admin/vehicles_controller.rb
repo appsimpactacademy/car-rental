@@ -25,13 +25,14 @@ class Admin::VehiclesController < AdminController
 	end
 
 	def show
+		@owner = @vehicle.owner
 	end
 
 	def edit
 	end
 
 	def update
-		if @vehicle.vehicle_images.present? && params[:vehicle][:vehicle_images].present? ||  params[:vehicle][:vehicle_images].present?
+    if params[:vehicle][:vehicle_images].present? && (@vehicle.vehicle_images.present? || !@vehicle.vehicle_images.present?)
 			params[:vehicle][:vehicle_images].each do |image|
         @vehicle.vehicle_images.attach(image)
       end
@@ -62,8 +63,9 @@ class Admin::VehiclesController < AdminController
 			:base_price,
 			:price_per_km,
 			:name,
-			:fule_type,
-			:cover_image
+			:fuel_type,
+			:cover_image,
+			:description
 		)
 	end
 end

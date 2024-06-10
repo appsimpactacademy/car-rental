@@ -1,4 +1,4 @@
-<div class="col-lg-12 mx-auto mb-5">
+<div class="col-lg-12 mx-auto mb-5" data-controller="glightbox">
   <div class="row">
     <div class="col-lg-6">
       <h1><%= @vehicle.name %></h1>
@@ -12,13 +12,29 @@
       <%= image_tag @vehicle.cover_image, class:'cover-img w-100 rounded-2' %>
     </div>
   <% end %>
-  <div class="row mt-4">        
-    <% @vehicle.vehicle_images.each do |image| %>
-      <div class="col-3 mt-3">
-        <%= image_tag image, class: "d-block rounded-2 w-100 vehicle-gallery-images" %>
-      </div>
-    <% end %>
-  </div>  
+  <div id="vehicleCarousel" class="carousel slide mt-5 mb-5" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <% @vehicle.vehicle_images.each_slice(3).with_index do |images, index| %>
+        <div class="carousel-item <%= 'active' if index.zero? %>">
+          <div class="row gallery">
+            <% images.each do |image| %>
+              <div class="col">
+                <%= link_to image_tag(image, class: "d-block rounded-2 w-100 vehicle-gallery-images"), image, data: { lightbox: "vehicle-gallery" } %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#vehicleCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#vehicleCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
   <div class="row">
     <div class="col-lg-9">
       <% if @vehicle.description.present? %>
@@ -29,7 +45,7 @@
       <% end %>    
       <div class="mt-3 bg-light">
         <h3 class="p-3 mt-4 mb-3 fw-bold">Car Overview</h3>
-        <p class="px-3"><i class="bi bi-fuel-pump fs-3 me-2"></i> <%= @vehicle.fule_type %></p>
+        <p class="px-3"><i class="bi bi-fuel-pump fs-3 me-2"></i> <%= @vehicle.fuel_type %></p>
         <p class="px-3"><i class="bi bi-calendar fs-3 me-2"></i> <%= @vehicle.registration_number %></p>        
         <p class="px-3"><i class="bi bi-car-front-fill fs-3 me-2"></i> <%= @vehicle.vehicle_type.try(:name) %></p>
         <p class="px-3"><i class="bi bi-currency-dollar fs-3 me-2"></i> <%= number_to_currency @vehicle.base_price %></p>
