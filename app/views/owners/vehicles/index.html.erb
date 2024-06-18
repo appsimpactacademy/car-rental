@@ -17,21 +17,18 @@
               <h5 class="card-title"><%= link_to vehicle.name, vehicle_path(vehicle), class: "text-decoration-none text-dark" %></h5>
               <div class="row">
                 <div class="col-lg-4">
-                  <p class="card-text text-center"><i class="bi bi-fuel-pump fs-3"></i> <br> <%= vehicle.fuel_type %></p>
+                  <p class="card-text"><i class="bi bi-fuel-pump fs-3"></i> <br> <%= vehicle.fuel_type %></p>
                 </div>
                 <div class="col-lg-4">
-                  <p class="card-text text-center"><i class="bi bi-speedometer2 fs-3"></i> <br> <%= number_to_currency(vehicle.price_per_km, unit: "Rs. ") %></p>
-                </div>
-                <div class="col-lg-4">
-                  <p class="card-text text-center"><i class="bi bi-clock fs-3"></i> <br> <%= number_to_currency(vehicle.price_per_hour, unit: "Rs. ") %>/hr</p>
+                  <p class="card-text"><i class="bi bi-speedometer2 fs-3"></i> <br> <%= vehicle.price_per_km %></p>
                 </div>
               </div>
               <hr>
               <div class="row">
                 <div class="col-lg-6">
-                  <p class="card-text fw-bold"><%= number_to_currency(vehicle.base_price, unit: "Rs. ") %></p>
+                  <p class="card-text fw-bold"> $ <%= vehicle.base_price %></p>
                 </div>
-                <div class="col-lg-6 fw-bold text-end">
+                <div class="col-lg-6 fw-bold">
                   <%= link_to vehicle_path(vehicle), class: "text-decoration-none text-danger" do %>
                     View Details <i class="bi bi-arrow-up-right"></i>
                   <% end %>

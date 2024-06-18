@@ -1,9 +1,9 @@
-class VehiclesController < ApplicationController
+class Owners::VehiclesController < OwnersController
 	before_action :authenticate_user!
 	before_action :set_vehicle, only: [:show, :edit, :update, :destroy]
 
 	def index
-		@vehicles = Vehicle.all.includes(:owner, :vehicle_type, vehicle_images_attachments: :blob).order(created_at: :desc)
+		@vehicles = Vehicle.where(owner_id: current_user.id) if current_user.is_owner?
 	end
 
 	def new
@@ -11,7 +11,8 @@ class VehiclesController < ApplicationController
 	end
 
 	def create
-		@vehicle = Vehicle.new(vehicle_params)
+		@vehicle = Vehicle.new(vehicle_params) 
+
 		# Save uploaded images directly without relying on params
     if params[:vehicle][:vehicle_images].present?
       params[:vehicle][:vehicle_images].each do |image|
@@ -19,7 +20,7 @@ class VehiclesController < ApplicationController
       end
     end
 		if @vehicle.save
-			redirect_to @vehicle, notice: "Vehicle was successfully created."
+			redirect_to owners_vehicle_path, notice: "Vehicle was successfully created."
 		else
 			render :new, status: :unprocessable_entity
 		end
@@ -40,7 +41,7 @@ class VehiclesController < ApplicationController
       end
 		end
 		if @vehicle.update(vehicle_params)
-			redirect_to @vehicle, notice: "Vehicle was successfully updated."
+			redirect_to owners_vehicles_path, notice: "Vehicle was successfully updated."
 		else
 			render :edit, status: :unprocessable_entity			
 		end
@@ -48,7 +49,7 @@ class VehiclesController < ApplicationController
 
 	def destroy
 		@vehicle.destroy
-		redirect_to vehicles_path, notice: "Vehicle was successfully destroyed."
+		redirect_to owners_vehicles_path, notice: "Vehicle was successfully destroyed."
 	end
 
 	private
@@ -67,8 +68,7 @@ class VehiclesController < ApplicationController
 			:name,
 			:fuel_type,
 			:cover_image,
-			:description,
-			:price_per_hour
+			:description
 		)
 	end
 end

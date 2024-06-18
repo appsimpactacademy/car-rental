@@ -1,6 +1,9 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  has_one :owner
+  has_many :bookings
+  has_many :vehicles, foreign_key: :owner_id
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable, :trackable
 
@@ -12,6 +15,20 @@ class User < ApplicationRecord
                            uniqueness: true, 
                            length: { minimum: 10, maximum: 10 }, 
                            numericality: { only_integer: true }
+  has_one_attached :profile_image                         
+
+  ROLES = {
+    admin: 'admin',
+    owner: 'owner',
+    user: 'user',
+    rentee: 'rentee'
+  }.freeze
+
+  validates :role, inclusion: { in: ROLES.values }                         
+
+  def name
+    "#{first_name} #{last_name}"
+  end
 
 
   def generate_otp
@@ -29,5 +46,9 @@ class User < ApplicationRecord
 
   def is_admin?
     role == 'admin'
-  end                        
+  end    
+
+  def is_owner?
+    role == 'owner'
+  end                    
 end

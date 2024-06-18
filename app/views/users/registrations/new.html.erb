@@ -49,6 +49,14 @@
           <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control mt-2 mb-2" %>
         </div>
 
+        <div class="form-group">
+          <%= f.label :role_owner, "I want to list car", class: "mr-3 mt-2 mb-2 me-1" %>
+          <%= f.radio_button :role, 'owner', id: 'role_owner', class: "me-2" %>
+
+          <%= f.label :role_rentee, "I am looking for rental car", class: "mr-3 mt-2 mb-2 me-1" %>
+          <%= f.radio_button :role, 'rentee', id: 'role_rentee' %>
+        </div>
+
         <div class="actions">
           <%= f.submit "Sign up", class: "btn btn-primary mt-1 mb-1" %>
           <%= link_to "Log in", new_session_path(resource_name), class: "btn btn-primary mt-1 mb-1" %>

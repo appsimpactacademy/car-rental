@@ -12,11 +12,23 @@ Rails.application.routes.draw do
     post '/verify_otp', to: 'users/sessions#verify_otp', as: :verify_otp
   end
   resources :vehicles
+  resources :bookings
 
   namespace :admin do
     get 'dashboard', to: 'dashboard#index' # Define the admin dashboard route
     resources :owners
     resources :vehicles
     resources :vehicle_types
+  end
+
+  namespace :owners do
+    get 'dashboard', to: 'dashboard#index'
+    resources :vehicles
+    resources :bookings do
+      member do
+        patch :accept
+        patch :reject
+      end
+    end
   end
 end

@@ -1,0 +1,38 @@
+<div class="sidebar sidebar-dark sidebar-fixed border-end" id="sidebar" data-controller="sidebar">
+  <div class="sidebar-header border-bottom">
+    <div class="sidebar-brand">
+      <h3><%= current_user.name %></h3>
+    </div>
+    <button class="btn-close d-lg-none close-btn" type="button" data-coreui-dismiss="offcanvas" data-coreui-theme="dark" aria-label="Close"></button>
+  </div>
+  <ul class="sidebar-nav" data-coreui="navigation" data-simplebar>
+    <li class="nav-item">
+      <%= link_to owners_dashboard_path, class: 'nav-link', target: '_top' do %>
+      <svg class="nav-icon">
+        <use xlink:href="<%= asset_path('coreui/sprites/free.svg') %>#cil-speedometer">
+        </use>
+      </svg> Dashboard
+      <% end %>
+    </li>
+    <li class="nav-divider"></li>
+    <li class="nav-item">
+      <%= link_to new_owners_vehicle_path, class: 'nav-link', target: '_top' do %>
+      <svg class="nav-icon">
+        <use xlink:href="<%= asset_path('coreui/sprites/free.svg') %>#cil-speedometer">
+        </use>
+      </svg> Add Vehicles 
+      <% end %>
+    </li>
+    <li class="nav-item">
+      <%= link_to owners_bookings_path, class: 'nav-link', target: '_top' do %>
+      <svg class="nav-icon">
+        <use xlink:href="<%= asset_path('coreui/sprites/free.svg') %>#cil-speedometer">
+        </use>
+      </svg> Bookings
+      <% end %>
+    </li>
+  </ul>
+  <div class="sidebar-footer border-top d-none d-md-flex">
+    <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>
+  </div>
+</div>
