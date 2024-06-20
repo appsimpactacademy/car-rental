@@ -1,43 +1,43 @@
+// app/javascript/controllers/bookings_controller.js
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["status", "acceptButton", "rejectButton"]
-
+  static targets = ["status"]
+  
   connect() {
-    this.csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+    console.log("Bookings controller connected")
   }
 
   accept(event) {
-    const bookingId = event.target.dataset.bookingId
-    this.updateBookingStatus(bookingId, 'accept')
+    this.updateStatus(event, "accept")
   }
 
   reject(event) {
-    const bookingId = event.target.dataset.bookingId
-    this.updateBookingStatus(bookingId, 'reject')
+    this.updateStatus(event, "reject")
   }
 
-  updateBookingStatus(bookingId, action) {
+  updateStatus(event, action) {
+    const bookingId = event.target.dataset.bookingId
+
     fetch(`/owners/bookings/${bookingId}/${action}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        'X-CSRF-Token': this.csrfToken
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
       }
     })
     .then(response => response.json())
     .then(data => {
-      if (data.status) {
-        const statusElement = document.querySelector(`#booking-status-${bookingId}`)
-        statusElement.textContent = data.status.charAt(0).toUpperCase() + data.status.slice(1)
-
-        const acceptButton = document.querySelector(`button[data-booking-id="${bookingId}"][data-action="click->bookings#accept"]`)
-        const rejectButton = document.querySelector(`button[data-booking-id="${bookingId}"][data-action="click->bookings#reject"]`)
-
-        if (acceptButton) acceptButton.disabled = true
-        if (rejectButton) rejectButton.disabled = true
+      if (data.message) {
+        const newStatus = action === "accept" ? "Accepted" : "Rejected"
+        const newClass = action === "accept" ? "badge text-bg-success" : "badge text-bg-danger"
+        this.statusTargets.forEach(element => {
+          if (element.dataset.bookingId === bookingId) {
+            element.textContent = newStatus
+            element.className = newClass
+          }
+        })
       }
     })
-    .catch(error => console.error('Error:', error))
   }
 }

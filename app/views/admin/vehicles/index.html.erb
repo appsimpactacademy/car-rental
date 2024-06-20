@@ -10,10 +10,10 @@
   <% @vehicles.each do |vehicle| %>
     <div class="col-md-12 mb-4">
       <div class="d-flex shadow p-3 mb-5 bg-white rounded">
-        <% if vehicle.vehicle_images.attached? %>
-          <%= image_tag url_for(vehicle.vehicle_images.last), class: "flex-shrink-0 me-3 rounded", size: "150x150" %>
+        <% if vehicle.cover_image.attached? %>
+          <%= image_tag vehicle.cover_image, class: "flex-shrink-0 me-3 rounded", size: "150x150" %>
         <% else %>
-          <%= image_tag url_for("https://themesflat.co/html/motorxhtml/assets/images/gallary/thum2.jpg"), class: "flex-shrink-0 me-3 rounded", size: "150x150" %>
+          <%= image_tag 'sedan01.jpeg', class: "flex-shrink-0 me-3 rounded", size: "150x150" %>
         <% end %>
         <div class="flex-grow-1 ms-3">
           <h5 class="mt-0"><%= link_to vehicle.name, admin_vehicle_path(vehicle), class: "text-decoration-none text-dark" %></h5>

@@ -2,9 +2,6 @@
   <div class="col-lg-6">
     <h1 class="fw-bold mt-2 mb-3">Owners</h1>
   </div>
-  <div class="col-lg-6 text-end">
-    <%= link_to "Create Owner", new_admin_owner_path, class: 'btn btn-primary mt-2 mb-2' %>
-  </div>
 </div>
 <table class="table table-bordered">
   <thead>
@@ -12,24 +9,14 @@
       <th>Name</th>
       <th>Email</th>
       <th>Contact Number</th>
-      <th>City</th>
-      <th>State</th>
-      <th>Country</th>
     </tr>
   </thead>
   <tbody>
     <% @owners.each do |owner| %>
       <tr>
-        <td>
-          <%= link_to admin_owner_path(owner), class: 'text-decoration-none' do %>
-            <%= owner.name %>
-          <% end %>              
-        </td>
+        <td><%= owner.name %></td>
         <td><%= owner.email %></td>
-        <td><%= owner.contact_number %></td>
-        <td><%= owner.city %></td>
-        <td><%= owner.state %></td>
-        <td><%= owner.country %></td>
+        <td><%= owner.phone_number %></td>
       </tr>
     <% end %>
   </tbody>

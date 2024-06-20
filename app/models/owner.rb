@@ -1,4 +1,6 @@
 class Owner < ApplicationRecord
-	has_many :vehicles, dependent: :destroy
-	has_one_attached :profile_image
+    # belongs_to :user
+    has_many :vehicles
+
+    validates :user_id, presence: true
 end

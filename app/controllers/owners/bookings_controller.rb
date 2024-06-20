@@ -3,7 +3,7 @@ class Owners::BookingsController < OwnersController
   before_action :set_booking, only: [:show, :edit, :update, :destroy]
 
   def index
-    @bookings = Booking.joins(:vehicle).where(vehicles: { owner_id: current_user.id }).order(created_at: :desc)
+    @bookings = Booking.includes(:vehicle, :user).where(vehicles: { owner_id: current_user.id }).order(created_at: :desc)
   end
 
   def new

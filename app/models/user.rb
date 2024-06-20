@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  has_one :owner
+  # has_one :owner, dependent: :destroy
   has_many :bookings
   has_many :vehicles, foreign_key: :owner_id
   devise :database_authenticatable, :registerable,
@@ -27,9 +27,8 @@ class User < ApplicationRecord
   validates :role, inclusion: { in: ROLES.values }                         
 
   def name
-    "#{first_name} #{last_name}"
+    "#{first_name} #{last_name}".strip
   end
-
 
   def generate_otp
     self.otp = rand.to_s[2..7]  # Generate a 6-digit OTP

@@ -1,10 +1,9 @@
 <% if @bookings.present? %>
   <h1>Your Bookings</h1>
 
-  <table class="table">
+  <table class="table" data-controller="bookings">
     <thead>
       <tr>
-        <th>ID</th>
         <th>User</th>
         <th>Vehicle Name</th>
         <th>Vehicle Owner Name</th>
@@ -22,7 +21,6 @@
     <tbody>
       <% @bookings.each do |booking| %>
         <tr>
-          <td><%= booking.id %></td>
           <td><%= booking.user.name %></td>
           <td><%= booking.vehicle.name %></td>
           <td><%= booking.vehicle.owner&.name %></td>
@@ -40,16 +38,14 @@
                               when 'accepted'
                                 'badge text-bg-success'
                               when 'rejected'
-                                'badge text-bg-danger' 
+                                'badge text-bg-danger'
                               else
                                 ''
                               end %>
-
-            <span class="<%= status_class %>">
+            <span class="<%= status_class %>" data-booking-id="<%= booking.id %>" data-bookings-target="status">
               <%= booking.status.present? ? booking.status.capitalize : 'Pending' %>
             </span>
           </td>
-
           <td>
             <%= link_to booking_path(booking) do %>
               <i class="bi bi-eye me-2"></i>

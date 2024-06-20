@@ -3,7 +3,7 @@ class BookingsController < ApplicationController
 	before_action :set_booking, only: [:show, :edit, :update, :destroy]
 
 	def index
-		@bookings = Booking.all.order(created_at: :desc)
+		@bookings = Booking.includes(:vehicle, :user).order(created_at: :desc)
 	end
 
 	def new

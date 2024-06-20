@@ -7,7 +7,6 @@ export default class extends Controller {
   	console.log('conected sidebar');
     const sidebarElement = document.querySelector('#sidebar');
     if (sidebarElement) {
-    	debugger
       try {
         const sidebar = new Sidebar(sidebarElement);
         const toggleButton = document.querySelector('.header-toggler');
