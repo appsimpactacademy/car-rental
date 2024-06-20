@@ -1,0 +1,74 @@
+<div class="container">
+    <h2>New Booking Notification</h2>
+    <p>Hello <%= @owner.name %>,</p>
+    
+    <p>A new booking has been made for your vehicle <b><%= @booking.vehicle.name %></b> by <b><%= @booking.user.name %></b>.</p>
+    
+    <h3>Vehicle Details:</h3>
+    <ul>
+      <li><b>Registration Number:</b> <%= @booking.vehicle.registration_number %></li>
+      <li><b>Base Price:</b> <%= number_to_currency(@booking.vehicle.base_price, unit: "Rs. ") %></li>
+      <li><b>Price per Hour:</b> <%= number_to_currency(@booking.vehicle.price_per_hour, unit: "Rs. ") %> / hr</li>
+      <li><b>Fuel Type:</b> <%= @booking.vehicle.fuel_type %></li>
+    </ul>
+    
+    <h3>Booking Details:</h3>
+    <ul>
+      <li><b>Start Date:</b> <%= @booking.start_date %></li>
+      <li><b>End Date:</b> <%= @booking.end_date %></li>
+      <li><b>Start Time:</b> <%= @booking.start_time.strftime("%H:%M %p") %></li>
+      <li><b>End Time:</b> <%= @booking.end_time.strftime("%H:%M %p") %></li>
+      <li><b>Total Amount:</b> <%= number_to_currency(@booking.calculate_total_amount, unit: "Rs. ") %></li>
+    </ul>
+    
+    <p>
+      <a class="button" href="<%= owners_bookings_url %>">View Bookings</a>
+    </p>
+    
+    <p class="footer">Regards,<br><%= @booking.user.name %></p>
+  </div>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    h2 {
+      color: #333;
+    }
+    p {
+      margin: 10px 0;
+    }
+    ul {
+      padding-left: 20px;
+      list-style-type: none;
+    }
+    ul li {
+      margin-bottom: 5px;
+    }
+    .footer {
+      margin-top: 20px;
+      border-top: 1px solid #ddd;
+      padding-top: 10px;
+      font-size: 14px;
+      color: #666;
+    }
+    .button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+  </style>

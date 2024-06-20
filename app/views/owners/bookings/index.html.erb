@@ -1,52 +1,52 @@
 <% if @bookings.present? %>
-  <h1>Your Bookings</h1>
+<h1>Your Bookings</h1>
 
-  <table class="table" data-controller="bookings">
-    <thead>
+<table class="table" data-controller="bookings">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>User</th>
+      <th>Vehicle Name</th>
+      <th>Vehicle Owner Name</th>
+      <th>Vehicle Registration No.</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Start Time</th>
+      <th>End Time</th>
+      <th>Price per hour</th>
+      <th>Total Amount</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @bookings.each do |booking| %>
       <tr>
-        <th>ID</th>
-        <th>User</th>
-        <th>Vehicle Name</th>
-        <th>Vehicle Owner Name</th>
-        <th>Vehicle Registration No.</th>
-        <th>Start Date</th>
-        <th>End Date</th>
-        <th>Start Time</th>
-        <th>End Time</th>
-        <th>Price per hour</th>
-        <th>Total Amount</th>
-        <th>Status</th>
+        <td><%= booking.id %></td>
+        <td><%= booking.user.name %></td>
+        <td><%= booking.vehicle.name %></td>
+        <td><%= booking.vehicle.owner.name %></td>
+        <td><%= booking.vehicle.registration_number %></td>
+        <td><%= booking.start_date %></td>
+        <td><%= booking.end_date %></td>
+        <td><%= booking.start_time.strftime("%H:%M %p") %></td>
+        <td><%= booking.end_time.strftime("%H:%M %p") %></td>
+        <td><%= number_to_currency(booking.vehicle.price_per_hour, unit: "Rs. ") %></td>
+        <td><%= number_to_currency(booking.calculate_total_amount, unit: "Rs. ") %></td>
+        
+        <td colspan="3">
+          <div class="btn-group" data-booking-id="<%= booking.id %>" data-bookings-target="status">
+            <% if booking.status == 'pending' && current_user.is_owner? && booking.vehicle.owner == current_user %>              
+              <button class="btn btn-success btn-sm" data-action="click->bookings#accept" data-booking-id="<%= booking.id %>">Accept</button>
+              <button class="btn btn-danger btn-sm" data-action="click->bookings#reject" data-booking-id="<%= booking.id %>">Reject</button>
+            <% else %>
+              <%= booking.status.present? ? booking.status.capitalize : 'Pending' %>  
+            <% end %>
+          </div>
+        </td>  
       </tr>
-    </thead>
-    <tbody>
-      <% @bookings.each do |booking| %>
-        <tr>
-          <td><%= booking.id %></td>
-          <td><%= booking.user.name %></td>
-          <td><%= booking.vehicle.name %></td>
-          <td><%= booking.vehicle.owner.name %></td>
-          <td><%= booking.vehicle.registration_number %></td>
-          <td><%= booking.start_date %></td>
-          <td><%= booking.end_date %></td>
-          <td><%= booking.start_time.strftime("%H:%M %p") %></td>
-          <td><%= booking.end_time.strftime("%H:%M %p") %></td>
-          <td><%= number_to_currency(booking.vehicle.price_per_hour, unit: "Rs. ") %></td>
-          <td><%= number_to_currency(booking.calculate_total_amount, unit: "Rs. ") %></td>
-          
-          <td colspan="3">
-            <div class="btn-group" data-booking-id="<%= booking.id %>" data-bookings-target="status">
-              <% if booking.status == 'pending' && current_user.is_owner? && booking.vehicle.owner == current_user %>              
-                <button class="btn btn-success btn-sm" data-action="click->bookings#accept" data-booking-id="<%= booking.id %>">Accept</button>
-                <button class="btn btn-danger btn-sm" data-action="click->bookings#reject" data-booking-id="<%= booking.id %>">Reject</button>
-              <% else %>
-                <%= booking.status.present? ? booking.status.capitalize : 'Pending' %>  
-              <% end %>
-            </div>
-          </td>  
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+    <% end %>
+  </tbody>
+</table>
 <% else %>
-  <p class="fs-4">No bookings done by you.</p>
+<p class="fs-4">No bookings done by you.</p>
 <% end %>
