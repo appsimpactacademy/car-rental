@@ -1,18 +1,3 @@
-<%# <div class="row">
-  <div class="col-md-4">
-    <div class="card mb-4 text-center text-white bg-primary shadow">
-      <div class="card-body">
-        <div>
-          <div class="fs-4 fw-semibold">
-            <div>Vehicles Listed</div> %>
-            <%#= @vehicles.count %>
-          <%# </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> %>
-
 <div class="row">
   <div class="col-md-12">
     <h2>Vehicles Listed by you</h2>
@@ -27,7 +12,7 @@
                 <th>Base Price</th>
                 <th>Price per km</th>
                 <th>Fuel Type</th>
-                <th></th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -39,14 +24,14 @@
                   <td><%= vehicle.price_per_km %></td>
                   <td><%= vehicle.fuel_type %></td>
                   <td>
-                    <%= link_to edit_owners_vehicle_path(vehicle) do %>
-                      <i class="bi bi-pencil-fill"></i>
-                    <% end %>
-                  </td>
-                  <td>
-                    <%= link_to owners_vehicle_path(vehicle), data: { turbo_method: :delete, turbo_confirm: "Are You Sure?" } do %>
-                      <i class="bi bi-trash-fill"></i>
-                    <% end %>
+                    <div class="btn-group" role="group">
+                      <%= link_to edit_owners_vehicle_path(vehicle), class: "btn btn-outline-primary", title: "Edit" do %>
+                        <i class="bi bi-pencil-fill"></i>
+                      <% end %>
+                      <%= link_to owners_vehicle_path(vehicle), method: :delete, class: "btn btn-outline-danger", title: "Delete", data: { turbo_confirm: "Are you sure?" } do %>
+                        <i class="bi bi-trash-fill"></i>
+                      <% end %>
+                    </div>
                   </td>
                 </tr>
               <% end %>

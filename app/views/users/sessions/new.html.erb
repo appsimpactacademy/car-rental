@@ -1,31 +1,22 @@
-<div class="col-lg-6 mx-auto mt-5">
+<div class="col-lg-6 mx-auto mt-5" data-controller="login">
   <div class="card shadow">
     <h2 class="card-header text-cwn">Log in</h2>
     <div class="card-body">
-      <%= render 'users/shared/email_password_login_form' %>
+      <div id="new_user" data-login-target="emailPasswordField">
+        <%= render 'users/shared/email_password_login_form' %>
+      </div>
       <div class="row">
         <!-- Add phone number login option -->
-        <div id='phone_number_login' style="display: none;">
-          <%= form_for(resource, as: resource_name, url: login_with_phone_number_path, method: :post) do |f| %>
+        <div id="phone_number_login" style="display: none;" data-login-target="phoneNumberLogin">
+          <%= form_for(resource, as: resource_name, url: login_with_phone_number_path, method: :post, id: 'phone-number-login-form') do |f| %>
             <%= hidden_field_tag :phone_number, params[:phone_number] %>
             <%= label_tag :phone_number, "Phone Number" %><br />
             <%= text_field_tag :phone_number, nil, class: "form-control mt-2 mb-2" %><br />
             <%= submit_tag "Send OTP", class: "btn btn-primary mt-1 mb-1" %>
           <% end %>
         </div>
+        <a href="#" id="phone-number-login" data-action="click->login#toggleLogin" data-login-target="phoneNumberLoginButton">Login with phone number</a>
       </div>
     </div>
   </div>
 </div>
-<!-- JavaScript to toggle between email/password login and phone number login -->
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    var emailPasswordField = document.querySelector("#new_user");
-    var phoneNumberLoginLink = document.querySelector("#phone-number-login");
-    phoneNumberLoginLink.onclick = function(event) {
-      event.preventDefault();
-      emailPasswordField.style.display = "none";
-      document.getElementById("phone_number_login").style.display = "block";
-    };
-  });
-</script>

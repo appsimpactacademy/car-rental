@@ -3,36 +3,40 @@
     <div class="col-lg-8">
       <% if @vehicle.cover_image.attached? %>
         <div class="cover-image-section mb-4">
-          <%= image_tag @vehicle.cover_image, class: 'cover-img w-100 rounded-2' %>
+          <%= image_tag @vehicle.cover_image, class: 'cover-img w-100 rounded' %>
         </div>
-        <% else %>
-          <%= image_tag 'https://as2.ftcdn.net/v2/jpg/00/58/87/17/1000_F_58871737_dryKwXlGDoaJRv8qlpEvvoSBXQ55yP9R.jpg', style: "width: 100%;", class: "rounded-2" %>
+      <% else %>
+        <div class="cover-image-section mb-4">
+          <%= image_tag 'sedan01.jpeg', class: "cover-img w-100 rounded h-100" %>
+        </div>
       <% end %>
-
-      <div id="vehicleCarousel" class="carousel slide mt-5 mb-5" data-bs-ride="carousel">
-        <div class="carousel-inner">
-          <% @vehicle.vehicle_images.each_slice(3).with_index do |images, index| %>
-            <div class="carousel-item <%= 'active' if index.zero? %>">
-              <div class="row gallery">
-                <% images.each do |image| %>
-                  <div class="col">
-                    <%= link_to image_tag(image, class: "d-block rounded-2 w-100 vehicle-gallery-images"), image, data: { lightbox: "vehicle-gallery" } %>
-                  </div>
-                <% end %>
+      <% if  @vehicle.vehicle_images.attached? %>
+        <div id="vehicleCarousel" class="carousel slide mt-5 mb-5" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <% @vehicle.vehicle_images.each_slice(3).with_index do |images, index| %>
+              <div class="carousel-item <%= 'active' if index.zero? %>">
+                <div class="row gallery">
+                  <% images.each do |image| %>
+                    <div class="col">
+                      <%= link_to image_tag(image, class: "d-block rounded-2 w-100 vehicle-gallery-images"), image, data: { lightbox: "vehicle-gallery" } %>
+                    </div>
+                  <% end %>
+                </div>
               </div>
-            </div>
-          <% end %>
+            <% end %>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#vehicleCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#vehicleCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#vehicleCarousel" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#vehicleCarousel" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
-      </div>
-
+      <% end %>  
+    </div>
+    <div class="col-lg-4">
       <div class="description mb-4">
         <h4 class="fw-bold">Description</h4>
         <p class="fs-5"><%= @vehicle.description.html_safe %></p>
@@ -47,95 +51,6 @@
        <div class="d-flex"><p class="fs-5"><i class="bi bi-speedometer2 fs-3 me-3"></i><span class="me-4 fw-bold">Price Per KM:</span><%= number_to_currency @vehicle.price_per_km, precision: 2 %></p></div>
       </div>
     </div>
-
-    <div class="col-lg-4">
-      <div class="bg-light p-3 rounded-3 mb-4">
-        <h3 class="fw-bold">Owner Information</h3>
-        <div class="text-center  d-flex mb-4">
-          <% if @owner.profile_image.attached? %>
-            <%= image_tag @owner.profile_image, alt: "Owner Avatar", class: "img-fluid rounded-circle", style: "width: 100px; height: 100px;" %>
-          <% else %>
-            <%= image_tag 'avtars/1.jpg', alt: "Owner Avatar", class: "img-fluid rounded-circle", style: "width: 100px; height: 100px;" %>
-          <% end %>
-          <div class="text-center mx-3 my-3">
-            <h5 class="fw-bold"><%= @owner.name %></h5>
-            <p><i class="bi bi-telephone me-2"></i><%= @owner.contact_number %></p>
-          </div>
-        </div>
-        <form>
-          <div class="mb-3">
-            <label for="ownerName" class="form-label">Your Name</label>
-            <input type="text" class="form-control" id="ownerName">
-          </div>
-          <div class="mb-3">
-            <label for="ownerEmail" class="form-label">Email</label>
-            <input type="email" class="form-control" id="ownerEmail">
-          </div>
-          <div class="mb-3">
-            <label for="ownerPhone" class="form-label">Enter Phone</label>
-            <input type="tel" class="form-control" id="ownerPhone">
-          </div>
-          <div class="mb-3">
-            <label for="ownerMessage" class="form-label">Message</label>
-            <textarea class="form-control" id="ownerMessage" rows="3"></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary w-100">Send Message</button>
-        </form>
-      </div>
-    </div>
   </div>
-
  <!-- Related Vehicles Section -->
-  
-</div>
-<div class="related-vehicles mt-5">
-  <h3 class="fw-bold">Related Vehicles</h3>
-  <div class="row">
-    <% @related_vehicles.each do |vehicle| %>
-      <div class="col-md-3">
-        <div class="card mb-4">
-          <%= link_to vehicle_path(vehicle), class: 'text-decoration-none' do %>
-            <div class="position-relative">
-              <% if vehicle.cover_image.attached? %>
-                <%= image_tag vehicle.cover_image, class: "card-img-top related-vehicle-img" %>
-              <% else %>
-                <%= image_tag 'sedan01.jpeg', class: "card-img-top related-vehicle-img" %>
-              <% end %>
-              <div class="overlay">
-                <span class="favorite-icon"><i class="bi bi-heart"></i></span>
-              </div>
-            </div>
-            <div class="card-body">
-              <h4 class="card-title text-dark"><%= vehicle.name %></h4>
-              <div class="d-flex justify-content-between mt-5">
-                <div class="d-block text-center fs-5 text-dark">
-                  <i class="bi bi-fuel-pump"></i>
-                  <div><%= vehicle.fuel_type %></div>
-                </div>
-                <div class="d-block text-center fs-5 text-dark">
-                  <i class="bi bi-calendar"></i>
-                  <div><%= vehicle.registration_number %></div>
-                </div>
-                <div class="d-block text-center fs-5 text-dark">
-                  <i class="bi bi-car-front-fill"></i>
-                  <div><%= vehicle.vehicle_type.try(:name) %></div>
-                </div>
-              </div>
-              <hr>
-              <div class="d-flex justify-content-between">
-                <div>
-                  <span class="text-muted"><%= number_to_currency(vehicle.base_price) %></span>
-                </div>
-                <div>
-                  <%= link_to vehicle_path(vehicle), class: "text-decoration-none text-danger" do %>
-                    View Details <i class="bi bi-arrow-up-right"></i>
-                  <% end %>
-                </div>
-              </div>
-            </div>
-          <% end %>
-        </div>
-      </div>
-    <% end %>
-  </div>
 </div>

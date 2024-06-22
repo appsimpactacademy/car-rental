@@ -17,7 +17,7 @@
 
   <div class="form-group">
     <%= form.label :owner_id %>
-    <%= form.select :owner_id, options_for_select(Owner.all.pluck(:name, :id), prompt: "Select Owner"), { }, { class: "form-select mt-2 mb-2" } %>
+    <%= form.select :owner_id, options_for_select(User.owners.all.pluck(:username, :id), prompt: "Select Owner"), { }, { class: "form-select mt-2 mb-2" } %>
   </div>
 
   <div class="form-group">

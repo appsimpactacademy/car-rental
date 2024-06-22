@@ -30,11 +30,9 @@ export default class extends Controller {
     .then(data => {
       if (data.message) {
         const newStatus = action === "accept" ? "Accepted" : "Rejected"
-        const newClass = action === "accept" ? "badge text-bg-success" : "badge text-bg-danger"
         this.statusTargets.forEach(element => {
           if (element.dataset.bookingId === bookingId) {
             element.textContent = newStatus
-            element.className = newClass
           }
         })
       }

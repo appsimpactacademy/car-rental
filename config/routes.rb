@@ -11,7 +11,7 @@ Rails.application.routes.draw do
     get '/otp_page', to: 'users/sessions#otp_page', as: :otp_page
     post '/verify_otp', to: 'users/sessions#verify_otp', as: :verify_otp
   end
-  resources :vehicles
+  resources :vehicles, only: [:index, :show]
   resources :bookings
 
   namespace :admin do

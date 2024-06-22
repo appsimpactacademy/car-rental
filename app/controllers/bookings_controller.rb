@@ -1,5 +1,6 @@
 class BookingsController < ApplicationController
   before_action :authenticate_user!
+  before_action :check_owner_access
   before_action :set_booking, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -56,5 +57,11 @@ class BookingsController < ApplicationController
       :start_time,
       :end_time
       )
+  end
+
+  def check_owner_access
+    if current_user.is_owner?
+      redirect_to owners_dashboard_path, alert: "Unauthorized access"
+    end
   end
 end

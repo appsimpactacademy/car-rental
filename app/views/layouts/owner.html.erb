@@ -11,14 +11,14 @@
   <body>
     <%= render 'shared/owner/sidebar' %>
     <div class="wrapper d-flex flex-column min-vh-100">
-      <%= render 'shared/admin/header' %>
+      <%= render 'shared/owner/header' %>
       <div class="body flex-grow-1 px-3">
         <div class="container-lg">
           <%= flash_messages %>
           <%= yield %>
         </div>  
       </div>
-      <%= render 'shared/admin/footer' %>
+      <%= render 'shared/owner/footer' %>
     </div>
   </body>
 </html>

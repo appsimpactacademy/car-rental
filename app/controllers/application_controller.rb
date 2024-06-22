@@ -1,6 +1,5 @@
 class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
-  layout :layout_by_resource
 
   rescue_from CanCan::AccessDenied do |exception|
     flash[:alert] = "You are not authorized to perform this action."
@@ -11,14 +10,6 @@ class ApplicationController < ActionController::Base
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_in, keys: [:phone_number])
-  end
-
-  def layout_by_resource
-    if user_signed_in? && current_user.is_admin?
-      'admin'
-    else
-      'application'
-    end
   end
 
   def after_sign_in_path_for(resource)

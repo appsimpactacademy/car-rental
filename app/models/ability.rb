@@ -8,8 +8,8 @@ class Ability
     if user.is_admin?
       can :manage, :all # Admins can manage everything
     elsif user.is_owner?
-      can :manage, Vehicle, owner_id: user.owner.id # Owners can manage their vehicles
-      # can :read, Booking, vehicle: { owner_id: user.owner.id } # Owners can read bookings for their vehicles
+      can :manage, Vehicle, owner_id: user.id # Owners can manage their vehicles
+      can :read, Booking, vehicle: { owner_id: user.owner.id } # Owners can read bookings for their vehicles
       # can :manage, Booking, user_id: user.id # Owners can manage their own bookings
     else
       # Define permissions for non-admin users

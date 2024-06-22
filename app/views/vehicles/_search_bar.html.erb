@@ -1,0 +1,49 @@
+<div class="card shadow mb-4">
+  <div class="card-body">
+    <%= form_with url: vehicles_path, method: :get, local: true, class: 'form' do |form| %>
+      <div class="row">
+        <div class="col-lg-3">
+          <div class="mb-3">
+            <%= form.label :vehicle_type_id, 'Vehicle Type', class: 'form-label' %>
+            <%= form.select :vehicle_type_id, options_from_collection_for_select(VehicleType.all, :id, :name, params[:vehicle_type_id]), { include_blank: 'Select Vehicle Type' }, { class: 'form-control' } %>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="mb-3">
+            <%= form.label :fuel_type, 'Fuel Type', class: 'form-label' %>
+            <%= form.select :fuel_type, options_for_select(Vehicle.pluck(:fuel_type).uniq, params[:fuel_type]), { include_blank: 'Select Fuel Type' }, { class: 'form-control' } %>
+          </div>
+        </div>
+        <div class="col-lg-2">
+          <div class="mb-3">
+            <%= form.label :start_date, "Start Date", class: "form-label" %>
+            <%= date_field_tag :start_date, params[:start_date], class: "form-control" %>
+          </div>
+        </div>
+        <div class="col-lg-2">
+          <div class="mb-3">
+            <%= form.label :start_time, "Start Time", class: "form-label" %>
+            <%= time_field_tag :start_time, params[:start_time], class: "form-control" %>
+          </div>
+        </div>
+        <div class="col-lg-2">
+          <div class="mb-3">
+            <%= form.label :end_date, "End Date", class: "form-label" %>
+            <%= date_field_tag :end_date, params[:end_date], class: "form-control" %>
+          </div>
+        </div>
+        <div class="col-lg-2">
+          <div class="mb-3">
+            <%= form.label :end_time, "End Time", class: "form-label" %>
+            <%= time_field_tag :end_time, params[:end_time], class: "form-control" %>
+          </div>
+        </div>
+        <div class="col-lg-1">
+          <div class="d-grid mt-4">
+            <%= form.submit 'Search', class: 'btn btn-primary' %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

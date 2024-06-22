@@ -12,6 +12,7 @@
         <li class="nav-item">
           <%= link_to "Bookings", bookings_path, class: "nav-link" %>
         </li>
+        <div style="clear:both;">
         <li class="nav-item">
           <% if user_signed_in? %>
             <%= link_to "Sign Out", destroy_user_session_path, class: "nav-link"  %>

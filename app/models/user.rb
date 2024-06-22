@@ -15,16 +15,15 @@ class User < ApplicationRecord
                            uniqueness: true, 
                            length: { minimum: 10, maximum: 10 }, 
                            numericality: { only_integer: true }
-  has_one_attached :profile_image                         
-
+  has_one_attached :profile_image
+  scope :owners, -> { where(role: 'owner') }   
   ROLES = {
     admin: 'admin',
     owner: 'owner',
     user: 'user',
     rentee: 'rentee'
   }.freeze
-
-  validates :role, inclusion: { in: ROLES.values }                         
+  validates :role, inclusion: { in: ROLES.values }
 
   def name
     "#{first_name} #{last_name}".strip
@@ -49,5 +48,9 @@ class User < ApplicationRecord
 
   def is_owner?
     role == 'owner'
+  end
+
+  def is_rentee?
+    role == 'rentee'
   end                    
 end

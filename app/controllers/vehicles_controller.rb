@@ -1,54 +1,32 @@
 class VehiclesController < ApplicationController
 	before_action :authenticate_user!
-	before_action :set_vehicle, only: [:show, :edit, :update, :destroy]
+	before_action :check_owner_access
+	before_action :set_vehicle, only: %i[show]
 
 	def index
-		@vehicles = Vehicle.all.includes(:owner, :vehicle_type, vehicle_images_attachments: :blob).order(created_at: :desc)
-	end
+	  @q = Vehicle.includes(:owner, :vehicle_type, vehicle_images_attachments: :blob).ransack(params[:q])
+	  @vehicles = @q.result
 
-	def new
-		@vehicle = Vehicle.new
-	end
+	  # Apply filtering based on start date/time and end date/time
+	  if params[:start_date].present? && params[:start_time].present? && params[:end_date].present? && params[:end_time].present?
+	    @vehicles = @vehicles.available_between(params[:start_date], params[:start_time], params[:end_date], params[:end_time])
+	  end
 
-	def create
-		@vehicle = Vehicle.new(vehicle_params)
-		# Save uploaded images directly without relying on params
-    if params[:vehicle][:vehicle_images].present?
-      params[:vehicle][:vehicle_images].each do |image|
-        @vehicle.vehicle_images.attach(image)
-      end
-    end
-		if @vehicle.save
-			redirect_to @vehicle, notice: "Vehicle was successfully created."
-		else
-			render :new, status: :unprocessable_entity
-		end
+	  # Apply filtering based on vehicle_type_id
+	  @vehicles = @vehicles.by_vehicle_type(params[:vehicle_type_id]) if params[:vehicle_type_id].present?
+
+	  # Apply filtering based on fuel_type
+	  @vehicles = @vehicles.by_fuel_type(params[:fuel_type]) if params[:fuel_type].present?
+
+	  respond_to do |format|
+	    format.html
+	    format.json { render json: @vehicles }
+	  end
 	end
 
 	def show
 		@owner = @vehicle.owner
 		@related_vehicles = @owner.vehicles.where.not(id: @vehicle.id) # Exclude the current vehicle
-	end
-
-	def edit
-	end
-
-	def update
-    if params[:vehicle][:vehicle_images].present? && (@vehicle.vehicle_images.present? || !@vehicle.vehicle_images.present?)
-			params[:vehicle][:vehicle_images].each do |image|
-        @vehicle.vehicle_images.attach(image)
-      end
-		end
-		if @vehicle.update(vehicle_params)
-			redirect_to @vehicle, notice: "Vehicle was successfully updated."
-		else
-			render :edit, status: :unprocessable_entity			
-		end
-	end
-
-	def destroy
-		@vehicle.destroy
-		redirect_to vehicles_path, notice: "Vehicle was successfully destroyed."
 	end
 
 	private
@@ -57,18 +35,9 @@ class VehiclesController < ApplicationController
 		@vehicle = Vehicle.includes(vehicle_images_attachments: :blob).find(params[:id])
 	end
 
-	def vehicle_params
-		params.require(:vehicle).permit(
-			:registration_number,
-			:owner_id,
-			:vehicle_type_id,
-			:base_price,
-			:price_per_km,
-			:name,
-			:fuel_type,
-			:cover_image,
-			:description,
-			:price_per_hour
-		)
-	end
+	def check_owner_access
+    if current_user.is_owner?
+      redirect_to owners_dashboard_path, alert: "Unauthorized access"
+    end
+  end
 end

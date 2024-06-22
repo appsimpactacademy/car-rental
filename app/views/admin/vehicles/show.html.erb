@@ -63,16 +63,6 @@
         <p><i class="bi bi-speedometer2 fs-3 me-2"></i><%= number_with_precision @vehicle.price_per_km, precision: 2 %></p>
       </div>
     </div>
-
-    <div class="col-lg-3">
-      <% if @vehicle.owner.present? %>
-        <div class="owner-info bg-light p-4 rounded mb-4">
-          <h3 class="fw-bold">Owner Info</h3>
-          <p><i class="bi bi-person fs-3 me-2"></i><%= @vehicle.owner.try(:name) %></p>
-          <p><i class="bi bi-telephone fs-3 me-2"></i><%= @vehicle.owner.try(:phone_number) %></p>
-        </div>
-      <% end %>
-    </div>
   </div>
 
   <div class="row mt-4">
