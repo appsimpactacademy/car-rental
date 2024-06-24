@@ -16,7 +16,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     get 'dashboard', to: 'dashboard#index' # Define the admin dashboard route
-    resources :owners
+    resources :owners, only: [:index]
     resources :vehicles
     resources :vehicle_types
   end

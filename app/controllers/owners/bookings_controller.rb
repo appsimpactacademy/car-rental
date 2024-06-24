@@ -1,36 +1,9 @@
 class Owners::BookingsController < OwnersController
   before_action :authenticate_user!
-  before_action :set_booking, only: [:show, :edit, :update, :destroy]
+  before_action :set_booking, only: [:destroy]
 
   def index
     @bookings = Booking.includes(:vehicle, :user).where(vehicles: { owner_id: current_user.id }).order(created_at: :desc)
-  end
-
-  def new
-    @booking = Booking.new
-  end
-
-  def create
-    @booking = Booking.create(booking_params)
-    if @booking.save
-      redirect_to owners_bookings_path, notice: "Booking was successfully created."
-    else
-      render :new, status: :unprocessable_entity
-    end
-  end
-
-  def show
-  end
-
-  def edit
-  end
-
-  def update
-    if @booking.update(booking_params)
-      redirect_to owners_bookings_path, notice: "Booking was successfully updated."
-    else
-      render :edit, status: :unprocessable_entity
-    end
   end
 
   def destroy
