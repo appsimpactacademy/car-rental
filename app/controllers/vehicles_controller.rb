@@ -29,7 +29,7 @@ class VehiclesController < ApplicationController
       @vehicle, rentee_name, rentee_email, rentee_phone
     ).deliver_now
 
-    redirect_to @vehicle, notice: 'Message sent to the owner.'
+    redirect_to vehicle_path(@vehicle), notice: 'Your enquiry has been successfully submitted to the owner. They will be in touch with you shortly.'
   end
 
   private

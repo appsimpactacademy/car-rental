@@ -1,0 +1,111 @@
+<div class="bg-light p-3 rounded-3 mb-4">
+	<div class="text-center mx-3 my-3">
+		<% if user_signed_in? %>
+		<!-- Contact Owner Button trigger modal -->
+		<button type="button" class="btn btn-success text-light w-100" data-bs-toggle="modal" data-bs-target="#contactOwnerModal">
+			<i class="bi bi-ticket-detailed-fill"></i> Owner Detail
+		</button>
+		<button type="button" class="btn btn-outline-primary w-100 mt-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#bookingModal">
+			<i class="bi bi-calendar-check me-2"></i> Book Now
+		</button>
+		<% else %>
+		<%= link_to new_user_session_path, class: "btn btn-success w-100" do %>
+		<i class="bi bi-ticket-detailed-fill"></i> Owner Detail
+		<% end %>
+		<%= link_to  new_user_session_path, class: "btn btn-outline-primary w-100 mt-2" do %>
+		<i class="bi bi-calendar-check me-2"></i> Book Now
+		<% end %>
+		<% end %> 
+	</div>
+</div>
+<div class="card shadow">
+	<div class="card-body">
+		<h2 class="text-center">Contact Owner</h2>
+		<%= form_with url: send_message_vehicle_path(@vehicle), method: :post do |f| %>
+		<div class="form-group mt-2 mb-2">
+			<%= f.label :name, class: "form-label" %>
+			<%= f.text_field :name, class: "form-control", required: true %>
+		</div>
+		<div class="form-group mt-2 mb-2">
+			<%= f.label :email, class: "form-label" %>
+			<%= f.email_field :email, class: "form-control", required: true %>
+		</div>
+		<div class="form-group mt-2 mb-2">
+			<%= f.label :phone_number, class: "form-label" %>
+			<%= f.text_field :phone_number, class: "form-control", required: true %>
+		</div>
+		<%= f.submit "Send Message", class: "btn btn-danger text-light rounded-0 w-100 mt-2" %>
+		<% end %>
+	</div>
+</div>
+<div class="card shadow calculator mt-5" data-controller="calculator" data-calculator-base-price="<%= @vehicle.base_price %>" data-calculator-price-per-km="<%= @vehicle.price_per_km %>">
+  <div class="card-body">
+    <h3 class="fw-bold mb-4">Calculate Estimated Amount</h3>
+    <form data-action="submit->calculator#calculate">
+      <div class="form-check form-check-inline">
+        <input type="radio" name="trip_type" id="oneWayTrip" value="one_way" checked data-calculator-target="tripType">
+        <label for="oneWayTrip" class="form-check-label">One Way</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input type="radio" name="trip_type" id="twoWayTrip" value="two_way" data-calculator-target="tripType">
+        <label for="twoWayTrip" class="form-check-label">Two Way</label>
+      </div>
+
+      <div class="form-group mt-3">
+        <label for="distanceKm" class="form-label">Kilometers (min. 10)</label>
+        <input type="number" id="distanceKm" name="distance_km" class="form-control" min="10" required data-calculator-target="distanceKm">
+      </div>
+
+      <div class="mb-3 mt-3">
+			  <div class="badge bg-primary text-white"><strong>Base Price:</strong> <%= number_to_currency(@vehicle.base_price, unit: "Rs. ") %></div>
+			  <div class="badge bg-secondary"><strong>Price Per Km:</strong> <%= number_to_currency(@vehicle.price_per_km, unit: "Rs. ") %></div>
+			</div>
+      <button type="submit" class="btn btn-primary mt-3">Calculate</button>
+    </form>
+    <div id="calculatorResult" class="mt-4" data-calculator-target="result"></div>
+  </div>
+</div>
+<div class="modal fade" id="contactOwnerModal" tabindex="-1" aria-labelledby="contactOwnerModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="contactOwnerModalLabel">Contact Owner</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-lg-3">
+						<% if user_signed_in? && current_user.profile_image.present? %>
+						<%= image_tag profile_image %>
+						<% else %>
+						<%= image_tag "https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?t=st=1719568989~exp=1719572589~hmac=183092f16506fb3b2916086787d898deab3e32efb5fc2f44b5e735a9e9b9f866&w=826", style: 'width: 100px;'  %>  
+						<% end %>
+					</div>
+					<div class="col-lg-9 mt-3">
+						<p><strong>Name :</strong> <%= @owner.name %></p>
+						<p><strong>Email :</strong> <%= @owner.email %></p>
+						<p><strong>Contact Number :</strong> <%= @owner.phone_number %></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="book_car_button mt-4">
+	<% if user_signed_in? %>
+	<!-- Modal -->
+	<div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header bg-success text-white">
+					<h5 class="modal-title" id="bookingModalLabel">Book Vehicle</h5>
+					<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<%= render 'bookings/form', booking: Booking.new(vehicle_id: @vehicle.id) %>
+				</div>
+			</div>
+		</div>
+	</div>
+	<% end %>  
+</div>
