@@ -21,6 +21,10 @@ Rails.application.routes.draw do
     resources :vehicle_types
   end
 
+  resources :vehicles do
+    post 'send_message', on: :member
+  end
+
   namespace :owners do
     get 'dashboard', to: 'dashboard#index'
     resources :vehicles

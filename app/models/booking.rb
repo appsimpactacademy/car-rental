@@ -5,11 +5,20 @@ class Booking < ApplicationRecord
   STATUSES = %[pending accepted rejected].freeze
 
   validates :status, inclusion: { in: STATUSES }
+  validates :start_date, :end_date, presence: true
+  validate :end_date_after_start_date
+  validate :user_can_book_once_per_day, on: :create
 
-  after_initialize :set_default_status, if: :new_record?
+  def end_date_after_start_date
+    return if end_date.blank? || start_date.blank?
 
-  def set_default_status
-    self.status ||= 'pending'
+    errors.add(:end_date, "must be after the start date") if end_date <= start_date
+  end
+
+  def user_can_book_once_per_day
+    if user && user.bookings.where("DATE(start_date) = ?", start_date.to_date).exists?
+      errors.add(:user_id, "has already booked a vehicle for this day")
+    end
   end
 
   def calculate_total_amount

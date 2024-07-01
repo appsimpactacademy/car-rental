@@ -17,7 +17,7 @@
         <div class="col-lg-2">
           <div class="mb-3">
             <%= form.label :start_date, "Start Date", class: "form-label" %>
-            <%= date_field_tag :start_date, params[:start_date], class: "form-control" %>
+            <%= form.text_field :start_date, class: 'form-control datepicker', data: { controller: 'datepicker' }, placeholder: 'Select start date' %>
           </div>
         </div>
         <div class="col-lg-2">
@@ -29,7 +29,7 @@
         <div class="col-lg-2">
           <div class="mb-3">
             <%= form.label :end_date, "End Date", class: "form-label" %>
-            <%= date_field_tag :end_date, params[:end_date], class: "form-control" %>
+            <%= form.text_field :end_date, class: 'form-control datepicker', data: { controller: 'datepicker' }, placeholder: 'Select end date' %>
           </div>
         </div>
         <div class="col-lg-2">

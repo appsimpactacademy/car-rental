@@ -4,7 +4,8 @@
     <table class="table table-striped" data-controller="bookings">
       <thead>
         <tr>
-          <th>User</th>
+          <th>id</th>
+          <th>Vehicle id</th>
           <th>Vehicle Name</th>
           <th>Owner</th>
           <th>Registration No.</th>
@@ -19,7 +20,8 @@
       <tbody>
         <% @bookings.each do |booking| %>
           <tr>
-            <td><%= booking.user.name %></td>
+            <td><%= booking.id %></td>
+            <td><%= booking.vehicle.id %></td>
             <td><%= booking.vehicle.name %></td>
             <td><%= booking.vehicle.owner&.name %></td>
             <td><%= booking.vehicle.registration_number %></td>

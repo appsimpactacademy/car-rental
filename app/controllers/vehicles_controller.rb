@@ -1,7 +1,7 @@
 class VehiclesController < ApplicationController
-	before_action :authenticate_user!
-	before_action :check_owner_access
-	before_action :set_vehicle, only: %i[show]
+	before_action :authenticate_user!, except: [:index, :show]
+	before_action :check_owner_access, except: [:index, :show]
+	before_action :set_vehicle, only: %i[show send_message]
 
 	def index
 	  @q = Vehicle.includes(:owner, :vehicle_type, vehicle_images_attachments: :blob).ransack(params[:q])
@@ -27,6 +27,16 @@ class VehiclesController < ApplicationController
 	def show
 		@owner = @vehicle.owner
 		@related_vehicles = @owner.vehicles.where.not(id: @vehicle.id) # Exclude the current vehicle
+	end
+
+	def send_message
+	  rentee_name = params[:name]
+	  rentee_email = params[:email]
+	  rentee_phone = params[:phone_number]
+
+	  NotificationMailer.contact_owner(@vehicle, rentee_name, rentee_email, rentee_phone).deliver_now
+
+		redirect_to @vehicle, notice: 'Message sent to the owner.'
 	end
 
 	private

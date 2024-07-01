@@ -2,8 +2,8 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   # has_one :owner, dependent: :destroy
-  has_many :bookings
-  has_many :vehicles, foreign_key: :owner_id
+  has_many :bookings,  dependent: :destroy
+  has_many :vehicles, foreign_key: :owner_id, dependent: :destroy
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable, :trackable
 
@@ -20,7 +20,6 @@ class User < ApplicationRecord
   ROLES = {
     admin: 'admin',
     owner: 'owner',
-    user: 'user',
     rentee: 'rentee'
   }.freeze
   validates :role, inclusion: { in: ROLES.values }

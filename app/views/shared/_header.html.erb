@@ -9,18 +9,26 @@
         <li class="nav-item">
           <%= link_to "Vehicles", vehicles_path, class: "nav-link" %>
         </li>
-        <li class="nav-item">
-          <%= link_to "Bookings", bookings_path, class: "nav-link" %>
-        </li>
-        <div style="clear:both;">
-        <li class="nav-item">
-          <% if user_signed_in? %>
-            <%= link_to "Sign Out", destroy_user_session_path, class: "nav-link"  %>
-          <% else %>
-            <%= link_to "Sign In", user_session_path, class: "nav-link"  %>
-          <% end %>
-        </li>
+        <% if user_signed_in? %>
+          <li class="nav-item">
+            <%= link_to "Bookings", bookings_path, class: "nav-link" %>
+          </li>
+        <% end %>
+        <% if user_signed_in? %>
+          <li class="nav-item">
+            <%= link_to "Log Out", destroy_user_session_path, class: "nav-link"  %>
+          </li>  
+        <% else %>
+          <li class="nav-item">
+            <%= link_to "LogIn", new_user_session_path, class: "nav-link"  %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "Register", new_user_registration_path, class: "nav-link"  %>
+          </li>
+        <% end %>
       </ul>
     </div>
   </div>
 </nav>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js" integrity="sha384-9aYw2A6vMPaPZz4iikghJJ4p9FJDKJ5L/AIwRRkl6N8g3SHQ/CkI0FVJLhACMpvV" crossorigin="anonymous"></script>
