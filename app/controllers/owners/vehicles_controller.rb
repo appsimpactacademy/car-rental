@@ -3,7 +3,7 @@ class Owners::VehiclesController < OwnersController
 	before_action :set_vehicle, only: [:show, :edit, :update, :destroy]
 
 	def index
-		@vehicles = Vehicle.where(owner_id: current_user.id) if current_user.is_owner?
+		@vehicles = Vehicle.includes(:owner, :vehicle_type, vehicle_images_attachments: :blob, documents_attachments: :blob).where(owner_id: current_user.id) if current_user.is_owner?
 	end
 
 	def new
@@ -19,8 +19,13 @@ class Owners::VehiclesController < OwnersController
         @vehicle.vehicle_images.attach(image)
       end
     end
+    if params[:vehicle][:documents].present?
+      params[:vehicle][:documents].each do |document|
+        @vehicle.documents.attach(document)
+      end
+    end
 		if @vehicle.save
-			redirect_to owners_vehicle_path, notice: "Vehicle was successfully created."
+			redirect_to owners_vehicle_path(@vehicle), notice: "Vehicle was successfully created."
 		else
 			render :new, status: :unprocessable_entity
 		end
@@ -40,6 +45,11 @@ class Owners::VehiclesController < OwnersController
         @vehicle.vehicle_images.attach(image)
       end
 		end
+		if params[:vehicle][:documents].present? && (@vehicle.documents.present? || !@vehicle.documents.present?)
+      params[:vehicle][:documents].each do |document|
+        @vehicle.documents.attach(document)
+      end
+    end
 		if @vehicle.update(vehicle_params)
 			redirect_to owners_vehicles_path, notice: "Vehicle was successfully updated."
 		else

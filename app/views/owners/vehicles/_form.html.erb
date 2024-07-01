@@ -1,7 +1,7 @@
 <%= form_with(model: [:owners, @vehicle]) do |form| %>
   <% if @vehicle.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@vehicle.errors.count, "error") %> prohibited this vehicle from being saved:</h2>
+    <div class="alert alert-danger">
+      <h4 class="alert-heading"><%= pluralize(@vehicle.errors.count, "error") %> prohibited this vehicle from being saved:</h4>
       <ul>
         <% @vehicle.errors.full_messages.each do |message| %>
         <li><%= message %></li>
@@ -10,47 +10,48 @@
     </div>
   <% end %>
 
-  <div class="form-group">
+  <div class="form-floating mb-3">
+    <%= form.text_field :registration_number, class: "form-control", placeholder: "Enter Registration Number" %>
     <%= form.label :registration_number %>
-    <%= form.text_field :registration_number, class: "form-control mt-2 mb-2", placeholder: "Enter Registration Number" %>
   </div>
 
   <%= form.hidden_field :owner_id, value: current_user.id %>
 
-  <div class="form-group">
+  <div class="form-floating mb-3">
+    <%= form.select :vehicle_type_id, options_for_select(VehicleType.all.pluck(:name, :id), prompt: "Select Vehicle Type"), {}, { class: "form-select", placeholder: "Select Vehicle Type" } %>
     <%= form.label :vehicle_type_id %>
-    <%= form.select :vehicle_type_id, options_for_select(VehicleType.all.pluck(:name, :id), prompt: "Select Vehicle Type"), { }, { class: "form-select mt-2 mb-2" } %>
   </div>
 
-  <div class="form-group">
+  <div class="form-floating mb-3">
+    <%= form.number_field :base_price, class: "form-control", placeholder: "Enter Base Price" %>
     <%= form.label :base_price %>
-    <%= form.number_field :base_price, class: "form-control mt-2 mb-2", placeholder: "Enter Base Price" %>
   </div>
 
-  <div class="form-group">
+  <div class="form-floating mb-3">
+    <%= form.number_field :price_per_km, class: "form-control", placeholder: "Enter Price per Km" %>
     <%= form.label :price_per_km %>
-    <%= form.number_field :price_per_km, class: "form-control mt-2 mb-2", placeholder: "Enter Price per Km" %>
   </div>
 
-  <div class="form-group">
+  <div class="form-floating mb-3">
+    <%= form.text_field :name, class: "form-control", placeholder: "Enter Vehicle Name" %>
     <%= form.label :name %>
-    <%= form.text_field :name, class: "form-control mt-2 mb-2", placeholder: "Enter Vehicle Name" %>
   </div>
 
-  <div class="form-group">
+  <div class="form-floating mb-3">
+    <%= form.text_area :description, class: "form-control", placeholder: "Enter Vehicle description" %>
     <%= form.label :description %>
-    <%= form.text_area :description, class: "form-control mt-2 mb-2", placeholder: "Enter Vehicle description" %>
   </div>
 
-  <div class="form-group">
+  <div class="form-floating mb-3">
+    <%= form.select :fuel_type, %w(Petrol Diesel CNG Electric), { prompt: "Select Fuel Type" }, { class: "form-select", placeholder: "Select Fuel Type" } %>
     <%= form.label :fuel_type %>
-    <%= form.select :fuel_type, %w(Petrol Diesel CNG Electric), {prompt: "Select Fuel Type"}, {class: "form-select mt-2 mb-2"} %>
   </div>
 
-  <div class="form-group">
-    <%= form.label :cover_image %>
-    <%= form.file_field :cover_image, class: "form-control mt-2 mb-2" %>
+  <div class="mb-3">
+    <%= form.label :cover_image, class: "form-label" %>
+    <%= form.file_field :cover_image, class: "form-control" %>
   </div>
+
   <% if @vehicle.vehicle_images.attached? %>
     <div class="mt-4 mb-4">
       <p class="mb-0">Existing Vehicle Images:</p>
@@ -59,13 +60,33 @@
       <% end %>
     </div>
   <% end %>
-  <div class="form-group">
-    <%= form.label :vehicle_images %>
-    <%= form.file_field :vehicle_images, multiple: true, class: "form-control mt-2 mb-2" %>
+
+  <div class="mb-3">
+    <%= form.label :vehicle_images, class: "form-label" %>
+    <%= form.file_field :vehicle_images, multiple: true, class: "form-control" %>
+  </div>
+
+  <hr>
+
+  <h3>Documents Upload</h3>
+
+  <div class="mb-3">
+    <%= form.label :registration_certificate, class: "form-label" %>
+    <%= form.file_field :documents, multiple: true, name: 'vehicle[documents][]', class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :insurance_document, class: "form-label" %>
+    <%= form.file_field :documents, multiple: true, name: 'vehicle[documents][]', class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :puc_certificate, class: "form-label" %>
+    <%= form.file_field :documents, multiple: true, name: 'vehicle[documents][]', class: "form-control" %>
   </div>
 
   <div class="actions">
-    <%= form.submit class: "btn btn-primary mt-1 mb-1" %>
-    <%= link_to 'Back', owners_vehicles_path, class: 'btn btn-warning mt-1 mb-1' %>
+    <%= form.submit class: "btn btn-primary" %>
+    <%= link_to 'Back', owners_dashboard_path, class: 'btn btn-warning' %>
   </div>
 <% end %>

@@ -1,75 +1,93 @@
-<div class="container my-5" data-controller="glightbox">
-  <div class="row mb-4">
-    <div class="col-lg-6">
-      <h1 class="display-4"><%= @vehicle.name %></h1>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12 d-flex justify-content-end">
+      <%= link_to admin_vehicles_path, class: 'btn btn-secondary me-2' do %>
+        <i class="bi bi-arrow-left"></i> Back
+      <% end %>
+      <%= button_to 'Verify', verify_admin_vehicle_path(@vehicle), method: :patch, class: 'btn btn-success me-2' unless @vehicle.verified? %>
+      <%= button_to 'Unverify', unverify_admin_vehicle_path(@vehicle), method: :patch, class: 'btn btn-danger me-2' if @vehicle.verified? %>
     </div>
-    <div class="col-lg-6 text-end">
-      <h3 class="text-muted"><%= number_to_currency @vehicle.base_price %></h3>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <h1 class="fw-bold mt-2 mb-3"><%= @vehicle.name %></h1>
     </div>
   </div>
 
-  <% if @vehicle.cover_image.attached? %>
-    <div class="cover-image-section mb-4">
-      <%= image_tag @vehicle.cover_image, class: 'cover-img w-100 rounded' %>
-    </div>
-  <% else %>
-    <div class="cover-image-section mb-4">
-      <%= image_tag 'sedan01.jpeg', class: "cover-img w-100 rounded h-100" %>
+  <% if @vehicle.errors.any? %>
+    <div class="alert alert-danger">
+      <h4 class="alert-heading"><%= pluralize(@vehicle.errors.count, "error") %> prohibited this vehicle from being saved:</h4>
+      <ul>
+        <% @vehicle.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
     </div>
   <% end %>
 
+  <div class="row mb-4">
+    <div class="col-lg-4">
+      <% if @vehicle.cover_image.attached? %>
+        <%= image_tag @vehicle.cover_image, class: "img-thumbnail", size: "300x300" %>
+      <% else %>
+        <%= image_tag 'sedan01.jpeg', class: "img-thumbnail", size: "300x300" %>
+      <% end %>
+    </div>
+    <div class="col-lg-8">
+      <p><strong>Registration Number:</strong> <%= @vehicle.registration_number %></p>
+      <p><strong>Vehicle Type:</strong> <%= @vehicle.vehicle_type.name %></p>
+      <p><strong>Base Price:</strong> $ <%= @vehicle.base_price %></p>
+      <p><strong>Price per KM:</strong> $ <%= @vehicle.price_per_km %></p>
+      <p><strong>Fuel Type:</strong> <%= @vehicle.fuel_type %></p>
+      <p><strong>Description:</strong> <%= @vehicle.description %></p>
+    </div>
+  </div>
 
   <% if @vehicle.vehicle_images.attached? %>
-    <div id="vehicleCarousel" class="carousel slide mt-5 mb-5" data-bs-ride="carousel">
-      <div class="carousel-inner">
-        <% @vehicle.vehicle_images.each_slice(3).with_index do |images, index| %>
-          <div class="carousel-item <%= 'active' if index.zero? %>">
-            <div class="row gallery">
-              <% images.each do |image| %>
-                <div class="col">
-                  <%= link_to image_tag(image, class: "d-block rounded w-100 vehicle-gallery-images"), image, data: { lightbox: "vehicle-gallery" } %>
-                </div>
-              <% end %>
+    <div class="row mb-4">
+      <div class="col-lg-12">
+        <h3>Vehicle Images</h3>
+        <% @vehicle.vehicle_images.each do |image| %>
+          <%= image_tag image, class: "img-thumbnail me-2", size: "150x150" %>
+        <% end %>
+      </div>
+    </div>
+  <% else %>
+    <div class="mb-4 card shadow">
+      <div class="card-body">
+        <h2>No vehicle Images attached.</h2>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @vehicle.documents.attached? %>
+    <div class="row mb-4">
+      <h3>Documents</h3>
+      <div class="col-lg-12 d-flex">
+        <% @vehicle.documents.each do |document| %>
+          <div class="mb-3 mt-2 me-4">
+            <div class="align-items-center">
+              <%= link_to image_tag(document), rails_blob_path(document, disposition: 'attachment'), target: '_blank', class: 'document-img' %>
+            </div>
+            <div>
+              <%= link_to document.filename, rails_blob_path(document, disposition: 'attachment'), class: 'btn btn-outline-secondary mt-3', target: '_blank' %>
             </div>
           </div>
         <% end %>
       </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#vehicleCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#vehicleCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
     </div>
-  <% end %>
-
-  <div class="row">
-    <div class="col-lg-9">
-      <% if @vehicle.description.present? %>
-        <div class="description mb-4">
-          <h4 class="fw-bold">Description</h4>
-          <p><%= simple_format(@vehicle.description) %></p>
-        </div>
-      <% end %>
-
-      <div class="car-overview bg-light p-4 rounded mb-4">
-        <h3 class="fw-bold">Car Overview</h3>
-        <p><i class="bi bi-fuel-pump fs-3 me-2"></i><%= @vehicle.fuel_type %></p>
-        <p><i class="bi bi-calendar fs-3 me-2"></i><%= @vehicle.registration_number %></p>
-        <p><i class="bi bi-car-front-fill fs-3 me-2"></i><%= @vehicle.vehicle_type.try(:name) %></p>
-        <p><i class="bi bi-currency-dollar fs-3 me-2"></i><%= number_to_currency @vehicle.base_price %></p>
-        <p><i class="bi bi-speedometer2 fs-3 me-2"></i><%= number_with_precision @vehicle.price_per_km, precision: 2 %></p>
+  <% else %>
+    <div class="mb-4 card shadow">
+      <div class="card-body">
+        <h2>No documents attached.</h2>
       </div>
     </div>
-  </div>
-
-  <div class="row mt-4">
-    <div class="col-12 text-center">
-      <%= link_to 'Edit', edit_admin_vehicle_path(@vehicle), class: 'btn btn-primary mx-2' %>
-      <%= link_to 'Back', admin_vehicles_path, class: 'btn btn-secondary mx-2' %>
-      <%= link_to 'Delete', admin_vehicle_path(@vehicle), data: { turbo_method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-danger mx-2' %>
-    </div>
-  </div>
+  <% end %>
 </div>
+
+<style>
+  .document-img, .document-img img {
+    width: 300px;
+    height: 300px;
+  }
+</style>

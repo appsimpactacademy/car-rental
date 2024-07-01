@@ -12,6 +12,7 @@
                 <th>Base Price</th>
                 <th>Price per km</th>
                 <th>Fuel Type</th>
+                <th>Verify</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -24,9 +25,22 @@
                   <td><%= vehicle.price_per_km %></td>
                   <td><%= vehicle.fuel_type %></td>
                   <td>
+                    <% case vehicle.verification_status %>
+                    <% when 'verified' %>
+                      <span class="verified">✔️ Verified</span>
+                    <% when 'unverified' %>
+                      <span class="unverified">❌ Unverified</span>
+                    <% else %>
+                      <span class="pending">⏳ Pending</span>
+                    <% end %>
+                  </td>
+                  <td>
                     <div class="btn-group" role="group">
                       <%= link_to edit_owners_vehicle_path(vehicle), class: "btn btn-outline-primary", title: "Edit" do %>
                         <i class="bi bi-pencil-fill"></i>
+                      <% end %>
+                      <%= link_to owners_vehicle_path(vehicle), method: :delete, class: "btn btn-outline-warning", title: "Delete", data: { turbo_confirm: "Are you sure?" } do %>
+                        <i class="bi bi-eye"></i>
                       <% end %>
                       <%= link_to owners_vehicle_path(vehicle), method: :delete, class: "btn btn-outline-danger", title: "Delete", data: { turbo_confirm: "Are you sure?" } do %>
                         <i class="bi bi-trash-fill"></i>
