@@ -17,11 +17,13 @@ class User < ApplicationRecord
                            numericality: { only_integer: true }
   has_one_attached :profile_image
   scope :owners, -> { where(role: 'owner') }   
+
   ROLES = {
     admin: 'admin',
     owner: 'owner',
     rentee: 'rentee'
   }.freeze
+  
   validates :role, inclusion: { in: ROLES.values }
 
   def name

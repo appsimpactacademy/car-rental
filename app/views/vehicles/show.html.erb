@@ -5,8 +5,8 @@
         <div class="cover-image-section mb-4">
           <%= image_tag @vehicle.cover_image, class: 'cover-img w-100 rounded-2' %>
         </div>
-        <% else %>
-          <%= image_tag 'https://as2.ftcdn.net/v2/jpg/00/58/87/17/1000_F_58871737_dryKwXlGDoaJRv8qlpEvvoSBXQ55yP9R.jpg', style: "width: 100%;", class: "rounded-2" %>
+      <% else %>
+        <%= image_tag 'https://as2.ftcdn.net/v2/jpg/00/58/87/17/1000_F_58871737_dryKwXlGDoaJRv8qlpEvvoSBXQ55yP9R.jpg', style: "width: 100%;", class: "rounded-2" %>
       <% end %>
 
       <div id="vehicleCarousel" class="carousel slide mt-5 mb-5" data-bs-ride="carousel">
@@ -46,16 +46,12 @@
           <div class="col"><p class="fs-5"><i class="bi bi-calendar fs-3 me-2"></i><span class="me-2 fw-bold"></span><%= @vehicle.registration_number %></p></div>
           <div class="col"><p class="fs-5"><i class="bi bi-car-front-fill fs-3 me-2"></i><span class="me-2 fw-bold"></span><%= @vehicle.vehicle_type.try(:name) %></p></div>
         </div>
-        <div class="row">
-         <div class="col"><p class="fs-5"><i class="bi bi-currency-dollar fs-3 me-2"></i><span class="me-2 fw-bold"></span><%= number_to_currency(@vehicle.base_price, unit: "Rs. ") %></p></div>
-         <div class="col"><p class="fs-5"><i class="bi bi-speedometer2 fs-3 me-2"></i><span class="me-2 fw-bold"></span><%= number_to_currency(@vehicle.price_per_km, unit: "Rs. ") %></p></div>
-         <div class="col"><p class="fs-5"><i class="bi bi-speedometer2 fs-3 me-2"></i><span class="me-2 fw-bold"></span><%= number_to_currency(@vehicle.price_per_hour, unit: "Rs. ") %></p></div>
-        </div> 
       </div>
     </div>
 
     <div class="col-lg-4">
       <%= render 'card_section' %>
+      <%= render 'vehicles/calculate_estimated_amount' %>
     </div>
   </div>
  <!-- Related Vehicles Section -->  

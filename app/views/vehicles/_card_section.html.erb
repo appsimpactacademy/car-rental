@@ -38,38 +38,6 @@
 		<% end %>
 	</div>
 </div>
-<div class="card shadow calculator mt-5" data-controller="calculator" data-calculator-base-price="<%= @vehicle.base_price %>" data-calculator-price-per-km="<%= @vehicle.price_per_km %>">
-  <div class="card-body">
-    <h3 class="fw-bold mb-4">Calculate Estimated Amount</h3>
-    <form data-action="submit->calculator#calculate">
-      <input type="hidden" id="startDate" value="<%= params[:start_date] %>" data-calculator-target="startDate">
-      <input type="hidden" id="endDate" value="<%= params[:end_date] %>" data-calculator-target="endDate">
-      <input type="hidden" id="startTime" value="<%= params[:start_time] %>" data-calculator-target="startTime">
-      <input type="hidden" id="endTime" value="<%= params[:end_time] %>" data-calculator-target="endTime">
-      
-      <div class="form-check form-check-inline">
-        <input type="radio" name="trip_type" id="oneWayTrip" value="one_way" checked data-calculator-target="tripType">
-        <label for="oneWayTrip" class="form-check-label">One Way</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input type="radio" name="trip_type" id="twoWayTrip" value="two_way" data-calculator-target="tripType">
-        <label for="twoWayTrip" class="form-check-label">Two Way</label>
-      </div>
-
-      <div class="form-group mt-3">
-        <label for="distanceKm" class="form-label">Kilometers (min. 10)</label>
-        <input type="number" id="distanceKm" name="distance_km" class="form-control" min="10" required data-calculator-target="distanceKm">
-      </div>
-
-      <div class="mb-3 mt-3">
-			  <div class="badge bg-primary text-white fs-6"><strong>Base Price:</strong> <%= number_to_currency(@vehicle.base_price, unit: "Rs. ") %></div>
-			  <div class="badge bg-secondary fs-6 mt-4"><strong>Price Per Km:</strong> <%= number_to_currency(@vehicle.price_per_km, unit: "Rs. ") %></div>
-			</div>
-      <button type="submit" class="btn btn-primary mt-3">Calculate</button>
-    </form>
-    <div id="calculatorResult" class="mt-4" data-calculator-target="result"></div>
-  </div>
-</div>
 <div class="modal fade" id="contactOwnerModal" tabindex="-1" aria-labelledby="contactOwnerModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">

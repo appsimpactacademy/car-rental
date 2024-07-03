@@ -17,7 +17,7 @@
         <div class="col-lg-2">
           <div class="mb-3">
             <%= form.label :start_date, "Start Date", class: "form-label" %>
-            <%= form.text_field :start_date, class: 'form-control datepicker', data: { controller: 'datepicker' }, placeholder: 'Select start date' %>
+            <%= form.text_field :start_date, value: params[:start_date] || Date.today.strftime("%Y-%m-%d"), class: 'form-control datepicker', data: { controller: 'datepicker' }, placeholder: 'Select Start date', autocomplete: 'off' %>
           </div>
         </div>
         <div class="col-lg-2">
@@ -29,7 +29,7 @@
         <div class="col-lg-2">
           <div class="mb-3">
             <%= form.label :end_date, "End Date", class: "form-label" %>
-            <%= form.text_field :end_date, class: 'form-control datepicker', data: { controller: 'datepicker' }, placeholder: 'Select end date' %>
+            <%= form.text_field :end_date, value: params[:end_date] || Date.today.strftime("%Y-%m-%d"), class: 'form-control datepicker', data: { controller: 'datepicker' }, placeholder: 'Select end date', autocomplete: 'off' %>
           </div>
         </div>
         <div class="col-lg-2">
