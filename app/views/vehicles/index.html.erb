@@ -9,7 +9,7 @@
   <% if @vehicles.present? %>
     <% @vehicles.each do |vehicle| %>
       <div class="col-md-4 mb-4">
-        <%= link_to vehicle_path(vehicle) do %>
+        <%= link_to vehicle_path(vehicle, start_date: params[:start_date], end_date: params[:end_date], start_time: params[:start_time], end_time: params[:end_time]) do %>
           <div class="card shadow" style="height: 490px;">
             <% if vehicle.vehicle_images.attached? %>
               <%= image_tag url_for(vehicle.vehicle_images.last), class: "card-img-top", size: "350x300" %>
@@ -35,7 +35,7 @@
                   <p class="card-text fw-bold"><%= number_to_currency(vehicle.base_price, unit: "Rs. ") %></p>
                 </div>
                 <div class="col-lg-6 fw-bold text-end">
-                  <%= link_to vehicle_path(vehicle), class: "text-decoration-none text-danger" do %>
+                  <%= link_to vehicle_path(vehicle, start_date: params[:start_date], end_date: params[:end_date],start_time: params[:start_time], end_time: params[:end_time]), class: "text-decoration-none text-danger" do %>
                     View Details <i class="bi bi-arrow-up-right"></i>
                   <% end %>
                 </div>

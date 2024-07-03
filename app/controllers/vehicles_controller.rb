@@ -17,7 +17,7 @@ class VehiclesController < ApplicationController
 
   def show
     @owner = @vehicle.owner
-    @related_vehicles = @owner.vehicles.includes_default.where.not(id: @vehicle.id)
+    @related_vehicles = @owner.vehicles.verified.includes_default.where.not(id: @vehicle.id)
   end
 
   def send_message

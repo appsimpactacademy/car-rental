@@ -3,7 +3,7 @@ class Owners::VehiclesController < OwnersController
 	before_action :set_vehicle, only: [:show, :edit, :update, :destroy]
 
 	def index
-		@vehicles = Vehicle.includes(:owner, :vehicle_type, vehicle_images_attachments: :blob, documents_attachments: :blob).where(owner_id: current_user.id) if current_user.is_owner?
+		@vehicles = Vehicle.includes_default.where(owner_id: current_user.id) if current_user.is_owner?
 	end
 
 	def new
@@ -11,50 +11,34 @@ class Owners::VehiclesController < OwnersController
 	end
 
 	def create
-		@vehicle = Vehicle.new(vehicle_params) 
+	  @vehicle = Vehicle.new(vehicle_params)
+	  attach_files(@vehicle, :vehicle_images)
+	  attach_files(@vehicle, :documents)
 
-		# Save uploaded images directly without relying on params
-    if params[:vehicle][:vehicle_images].present?
-      params[:vehicle][:vehicle_images].each do |image|
-        @vehicle.vehicle_images.attach(image)
-      end
-    end
-    if params[:vehicle][:documents].present?
-      params[:vehicle][:documents].each do |document|
-        @vehicle.documents.attach(document)
-      end
-    end
-		if @vehicle.save
-			redirect_to owners_vehicle_path(@vehicle), notice: "Vehicle was successfully created."
-		else
-			render :new, status: :unprocessable_entity
-		end
+	  if @vehicle.save
+	    redirect_to owners_vehicle_path(@vehicle), notice: "Vehicle was successfully created."
+	  else
+	    render :new, status: :unprocessable_entity
+	  end
 	end
 
 	def show
-		@owner = @vehicle.owner
-		@related_vehicles = @owner.vehicles.where.not(id: @vehicle.id) # Exclude the current vehicle
+	  @owner = @vehicle.owner
+	  @related_vehicles = @owner.vehicles.includes_default.where.not(id: @vehicle.id)
 	end
 
 	def edit
 	end
 
 	def update
-    if params[:vehicle][:vehicle_images].present? && (@vehicle.vehicle_images.present? || !@vehicle.vehicle_images.present?)
-			params[:vehicle][:vehicle_images].each do |image|
-        @vehicle.vehicle_images.attach(image)
-      end
-		end
-		if params[:vehicle][:documents].present? && (@vehicle.documents.present? || !@vehicle.documents.present?)
-      params[:vehicle][:documents].each do |document|
-        @vehicle.documents.attach(document)
-      end
-    end
-		if @vehicle.update(vehicle_params)
-			redirect_to owners_vehicles_path, notice: "Vehicle was successfully updated."
-		else
-			render :edit, status: :unprocessable_entity			
-		end
+	  attach_files(@vehicle, :vehicle_images)
+	  attach_files(@vehicle, :documents)
+
+	  if @vehicle.update(vehicle_params)
+	    redirect_to owners_vehicles_path, notice: "Vehicle was successfully updated."
+	  else
+	    render :edit, status: :unprocessable_entity
+	  end
 	end
 
 	def destroy
@@ -65,7 +49,15 @@ class Owners::VehiclesController < OwnersController
 	private
 
 	def set_vehicle
-		@vehicle = Vehicle.includes(vehicle_images_attachments: :blob).find(params[:id])
+		@vehicle = Vehicle.includes_default.find(params[:id])
+	end
+
+	def attach_files(vehicle, file_type)
+	  if params[:vehicle][file_type].present?
+	    params[:vehicle][file_type].each do |file|
+	      vehicle.send(file_type).attach(file)
+	    end
+	  end
 	end
 
 	def vehicle_params

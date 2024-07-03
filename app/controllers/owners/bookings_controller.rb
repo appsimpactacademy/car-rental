@@ -1,9 +1,11 @@
 class Owners::BookingsController < OwnersController
   before_action :authenticate_user!
-  before_action :set_booking, only: [:destroy]
+  before_action :set_booking, only: [:destroy, :accept, :reject]
 
   def index
-    @bookings = Booking.includes(:vehicle, :user).where(vehicles: { owner_id: current_user.id }).order(created_at: :desc)
+    @bookings = Booking.includes(:vehicle, :user)
+                       .where(vehicles: { owner_id: current_user.id })
+                       .order(created_at: :desc)
   end
 
   def destroy
@@ -12,21 +14,22 @@ class Owners::BookingsController < OwnersController
   end
 
   def accept
-  	@booking = Booking.find(params[:id])
-    @booking.update(status: 'accepted')
-    render json: { message: 'Booking accepted.' }
+    update_booking_status('accepted', 'Booking accepted.')
   end
 
   def reject
-  	@booking = Booking.find(params[:id])
-    @booking.update(status: 'rejected')
-    render json: { message: 'Booking rejected.' }
+    update_booking_status('rejected', 'Booking rejected.')
   end
 
   private
 
   def set_booking
     @booking = Booking.find(params[:id])
+  end
+
+  def update_booking_status(status, message)
+    @booking.update(status: status)
+    render json: { message: message }
   end
 
   def booking_params
