@@ -3,10 +3,9 @@
     <h3 class="fw-bold mb-4">Calculate Estimated Amount</h3>
     <% if params[:start_date].present? && params[:start_time].present? && params[:end_date].present? && params[:end_time].present? %>
       <h4>Filters</h4>
-    <% end %>
-
-    <% [[:start, :start_date, :start_time], [:end, :end_date, :end_time]].each do |prefix, date_param, time_param| %>
-      <% if params[date_param].present? && params[time_param].present? %>
+      <% [:start, :end].each do |prefix| %>
+        <% date_param = "#{prefix}_date" %>
+        <% time_param = "#{prefix}_time" %>
         <% parsed_date = Date.parse(params[date_param]) rescue nil %>
         <% parsed_time = Time.parse(params[time_param]) rescue nil %>
         <% if parsed_date && parsed_time %>
@@ -20,6 +19,7 @@
         <% end %>
       <% end %>
     <% end %>
+    
     <form data-action="submit->calculator#calculate" class="mt-3">
       <input type="hidden" id="startDate" value="<%= params[:start_date] %>" data-calculator-target="startDate">
       <input type="hidden" id="endDate" value="<%= params[:end_date] %>" data-calculator-target="endDate">
@@ -46,6 +46,7 @@
       </div>
       <button type="submit" class="btn btn-primary mt-3">Calculate</button>
     </form>
+    
     <div id="calculatorResult" class="mt-4" data-calculator-target="result"></div>
   </div>
 </div>

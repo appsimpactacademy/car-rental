@@ -28,4 +28,8 @@ class Vehicle < ApplicationRecord
   def self.ransackable_attributes(auth_object = nil)
     ["base_price", "created_at", "description", "fuel_type", "id", "name", "owner_id", "price_per_hour", "price_per_km", "registration_number", "updated_at", "vehicle_type_id"]
   end
+
+   def self.ransackable_associations(auth_object = nil)
+    ["bookings", "cover_image_attachment", "cover_image_blob", "documents_attachments", "documents_blobs", "owner", "vehicle_images_attachments", "vehicle_images_blobs", "vehicle_type"]
+  end
 end

@@ -40,6 +40,11 @@
   </div>
 
   <div class="form-group mt-2 mb-2">
+    <%= form.label :distance_in_km %>
+    <%= form.number_field :distance_per_km, class: 'form-control' %>
+  </div>
+
+  <div class="form-group mt-2 mb-2">
     <%= form.submit class: 'btn btn-primary mt-2 mb-2' %>
   </div>
 <% end %>

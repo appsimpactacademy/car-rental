@@ -55,7 +55,8 @@ class BookingsController < ApplicationController
       :end_date,
       :amount,
       :start_time,
-      :end_time
+      :end_time,
+      :distance_per_km
       )
   end
 

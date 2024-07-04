@@ -8,6 +8,16 @@ export default class extends Controller {
 
   connect() {
     console.log("CalculatorController connected")
+    this.initializeForm()
+  }
+
+  initializeForm() {
+    const { startDateTarget, endDateTarget, startTimeTarget, endTimeTarget } = this
+
+    if (startDateTarget.value && endDateTarget.value && startTimeTarget.value && endTimeTarget.value) {
+      // Automatically select Two Way trip if start and end date/time are present
+      this.tripTypeTargets.find(input => input.value === 'two_way').checked = true
+    }
   }
 
   calculate(event) {
